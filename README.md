@@ -1,5 +1,5 @@
 # n-body_problem
 
-# ELTE BSc Fzika
-Haladó alkalamozott programozás $\\$
+ELTE BSc Fzika
+Haladó alkalamozott programozás
 A kutatómunka információs eszközei
