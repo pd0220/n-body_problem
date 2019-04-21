@@ -8,7 +8,7 @@ Haladó alkalamozott programozás beadandó
 
 A kutatómunka információs eszközei beadandó
 
-- A beadandó a lista 20. eleme, azaz az N-test probléma.
+- A beadandó a lista 20. eleme, azaz az N-test szimuláció.
 - A feladat:
 
 "Írjunk 4-ed rendű Runge-Kuttával N-test szimulációt, és próbáljuk meghatározni azt, hogy a
