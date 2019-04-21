@@ -1,4 +1,3 @@
-#include <iostream>
 #include <fstream>
 
 //RK4 method implementation for numerical integration
