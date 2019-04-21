@@ -1,10 +1,11 @@
-
+#include <iostream>
+#include <fstream>
 
 //RK4 method implementation for numerical integration
 template<typename State,typename T,typename RHS,typename Callback>
 auto solve_RK4(State y0,T t0,T t1,T h,RHS f,Callback cb)
 {
-    //Setting initial values
+    //setting initial values
     T t=t0;
     State y=y0;
     //RK4 steps until reaching integration boundary
@@ -29,7 +30,7 @@ auto solve_RK4(State y0,T t0,T t1,T h,RHS f,Callback cb)
 template<typename State,typename T,typename RHS,typename Callback>
 auto solve_Euler(State y0,T t0,T t1,T h,RHS f,Callback cb)
 {
-    //Setting initial values
+    //setting initial values
     T t=t0;
     State y=y0;
     //Euler step until reaching integration boundary
@@ -43,4 +44,14 @@ auto solve_Euler(State y0,T t0,T t1,T h,RHS f,Callback cb)
         t=t+h;
         cb(t,y);
     }
+}
+
+//writing to file after every step
+template<typename State,typename T>
+void to_file(T t,State y)
+{
+    std::ofstream file;
+    file.open("num_int.txt",std::fstream::app);
+    file<<t<<" "<<y<<"\n";
+    file.close();
 }
