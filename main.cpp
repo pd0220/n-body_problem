@@ -6,7 +6,7 @@ int main(int, char**)
 {
 
     //harmonic oscillator
-    auto harm_osc=[&](double t,vector<double> s)->vector<double>{return {s[0],-s[1]};};
+    auto harm_osc=[&](double t,vector<double> s)->vector<double>{return {s[1],-s[0]};};
 
     //initial condition
     vector<double> y0{5.,5.};
