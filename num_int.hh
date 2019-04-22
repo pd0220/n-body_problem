@@ -44,13 +44,3 @@ auto solve_Euler(State y0,T t0,T t1,T h,RHS f,Callback cb)
         cb(t,y);
     }
 }
-
-//writing to file after every step
-template<typename State,typename T>
-void to_file(T t,State y)
-{
-    std::ofstream file;
-    file.open("num_int.txt",std::fstream::app);
-    file<<t<<" "<<y<<"\n";
-    file.close();
-}
