@@ -14,7 +14,7 @@ int main(int, char**)
     double d=1.;
 
     //system RHS
-    auto LV_system=[&](double t,vector2<double> s)->vector2<double>{return {a*s.x-b*s.x*s.y,d*s.x*s.y-c*s.x};};
+    auto LV_system=[&](double t,vector2<double> s)->vector2<double>{return {a*s.x-b*s.x*s.y,d*s.x*s.y-c*s.y};};
 
     //initial values
     vector2<double> y0={100.,20.};
