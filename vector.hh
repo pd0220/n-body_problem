@@ -22,9 +22,9 @@ namespace detail
         std::transform(d1.cbegin(),d1.cend(),d2.cbegin(),f);
     }
     template<typename T1,typename T2,typename T3,typename F>
-    void transform2(T1 const& d1,T2 const& d2,T3 & d3,F f)
+    void transform_vec2(T1 const& d1,T2 const& d2,T3 & d3,F f)
     {
-        std::transform_vec2(d1.cbegin(),d1.cend(),d2.cbegin(),d3.begin(),f);
+        std::transform(d1.cbegin(),d1.cend(),d2.cbegin(),d3.begin(),f);
     }
 }
 
@@ -74,7 +74,7 @@ struct vector
     {
         return data[index];
     }
-    T const& operator[](int index)
+    T const& operator[](int index) const
     {
         return data[index];
     }
