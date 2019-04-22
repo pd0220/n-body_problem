@@ -4,8 +4,6 @@
 #include <numeric>
 #include <vector>
 #include <initializer_list>
-#include <string>
-#include <sstream>
 
 //general assumptions
 //(1) operations will only happen between objects that has the same type
@@ -19,7 +17,7 @@ namespace detail
     template<typename T1,typename T2,typename F>
     void transform_vec1(T1 const& d1,T2 & d2,F f)
     {
-        std::transform(d1.cbegin(),d1.cend(),d2.cbegin(),f);
+        std::transform(d1.cbegin(),d1.cend(),d2.begin(),f);
     }
     template<typename T1,typename T2,typename T3,typename F>
     void transform_vec2(T1 const& d1,T2 const& d2,T3 & d3,F f)
@@ -260,7 +258,7 @@ T sq_length(vector<T> const& v)
 template<typename T>
 T length(vector<T> const& v)
 {
-    return std::sqrt(length(v));
+    return std::sqrt(sq_length(v));
 }
 
 //-------------------------------------------------------------------------------------------------------
@@ -269,7 +267,16 @@ T length(vector<T> const& v)
 template<typename T>
 vector<T> norm(vector<T> const& v)
 {
-    return v/length(v);
+    T L=length(v);
+    if(L>0)
+    {
+        return v/L;
+    }
+    else
+    {
+        std::cout<<"Given vectors length is 0."<<std::endl;
+        std::exit(-1);
+    }
 }
 template<typename T>
 vector<T> && norm(vector<T> && v)
@@ -280,4 +287,52 @@ vector<T> && norm(vector<T> && v)
 
 //-------------------------------------------------------------------------------------------------------
 
+//output stream
+template<typename T>
+std::ostream& operator<<(std::ostream& o,vector<T> const& v)
+{
+    int n=v.size();
+    if(n>0)
+    {
+        for(int i{0};i<=n-2;i++)
+        {
+            o<<v[i]<<",";
+        }
+        o<<v[n-1];
+    }
+    return o;
+}
 
+//-------------------------------------------------------------------------------------------------------
+
+//testing functions
+//if two vectors are equal
+template<typename T>
+void vec_eq(vector<T> const& v1,vector<T> const& v2)
+{
+    if(v1.size()!=v2.size())
+    {
+        std::cout<<"ERROR\nNumber of vector elements are not equal."<<std::endl;
+        std:exit(-1);
+    }
+    T eps=(T)1e-6;
+    for(int i{0};i<=v1.size();i++)
+    {
+        if(std::abs(v1[i]-v2[i])>eps)
+        {
+            std::cout<<"ERRORS\nVectors are not equal."<<std::endl;
+            std::exit(-1);
+        }
+    }
+}
+
+//check if vector size is 0
+template<typename T>
+void vec_if_zero(vector<T> const& v)
+{
+    if(v.size()!=0)
+    {
+        std::cout<<"ERROR\nSize of given vector is not 0."<<std::endl;
+        std::exit(-1);
+    }
+}

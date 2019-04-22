@@ -19,7 +19,22 @@ target_compile_options(${PROJECT_NAME} PRIVATE $<$<OR:$<CXX_COMPILER_ID:GNU>,$<C
                  
 if(BUILD_TESTING)
   add_executable(vector_add Tests/vector_add.cpp)
-  add_test(NAME vector_add COMMAND vector_add)                                               
+  add_test(NAME vector_add COMMAND vector_add)
+  
+  add_executable(vector_sub Tests/vector_sub.cpp)
+  add_test(NAME vector_sub COMMAND vector_sub)
+
+  add_executable(vector_divscl Tests/vector_divscl.cpp)
+  add_test(NAME vector_divscl COMMAND vector_divscl)
+
+  add_executable(vector_mulscl Tests/vector_mulscl.cpp)
+  add_test(NAME vector_mulscl COMMAND vector_mulscl)
+
+  add_executable(vector_func Tests/vector_func.cpp)
+  add_test(NAME vector_func COMMAND vector_func)
+
+  add_executable(vector_co Tests/vector_co.cpp)
+  add_test(NAME vector_co COMMAND vector_co)
 endif(BUILD_TESTING)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
