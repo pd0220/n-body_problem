@@ -17,7 +17,7 @@ int main(int, char**)
     auto LV_system=[&](double t,vector2<double> s)->vector2<double>{return {a*s.x-b*s.x*s.y,d*s.x*s.y-c*s.x};};
 
     //initial values
-    vector2<double> y0={100.,10.};
+    vector2<double> y0={100.,20.};
 
     //writing to file after every step
     auto to_file=[&](double t,vector2<double> y){std::ofstream file;file.open("num_int.txt",std::fstream::app);file<<t<<" "<<y.x<<" "<<y.y<<"\n";file.close();};
