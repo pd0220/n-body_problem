@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8.0)
-project(n_body_sim VERSION 0.1.0)
+project(n_body_simulation VERSION 0.1.0)
 
 include(CTest)
 enable_testing()
@@ -8,7 +8,7 @@ if (MSVC)
   string(REGEX REPLACE "/W[0-9]" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
 endif (MSVC)
 
-add_executable(n_body_sim main.cpp)
+add_executable(n_body_simulation main.cpp)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 17
                                                  CXX_STANDARD_REQUIRED ON

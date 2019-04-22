@@ -17,15 +17,14 @@
 namespace detail
 {
     template<typename T1,typename T2,typename F>
-    void transform1(T1 const& d1,T2 & d2,F f)
+    void transform_vec1(T1 const& d1,T2 & d2,F f)
     {
         std::transform(d1.cbegin(),d1.cend(),d2.cbegin(),f);
     }
-
     template<typename T1,typename T2,typename T3,typename F>
     void transform2(T1 const& d1,T2 const& d2,T3 & d3,F f)
     {
-        std::transform(d1.cbegin(),d1.cend(),d2.cbegin(),d3.begin(),f);
+        std::transform_vec2(d1.cbegin(),d1.cend(),d2.cbegin(),d3.begin(),f);
     }
 }
 
@@ -83,10 +82,58 @@ struct vector
 //-------------------------------------------------------------------------------------------------------
 
     //assignment operators
-    
+    //addition assignment of vectors (+=)
+    vector<T> operator+=(vector<T> const& v)
+    {
+        detail::transform_vec2(*this,v,*this,add);
+        return *this;
+    }
+    //substraction assignment of vectors (-=)
+    vector<T> operator-=(vector<T> const& v)
+    {
+        detail::transform_vec2(*this,v,*this,sub);
+        return *this;
+    }
+    //multiplication by scalar assignment operator (*=)
+    vector<T> operator*=(T const& scl)
+    {
+        detail::transform_vec1(*this,*this,[&](T const& x){return x*scl;});
+        return *this;
+    }
+    //division by scalar assignment operator (/=)
+    vector<T> operator/=(T const& scl)
+    {
+        detail::transform_vec1(*this,*this,[&](T const& x){return x/scl;});
+        return *this;
+    }
+
+//-------------------------------------------------------------------------------------------------------
+
+    //further functions
+    //number of elements
+    int size() const
+    {
+        return static_cast<int>(data.size());
+    }
+    //end and begin of vector
+    auto begin()
+    {
+        return data.begin();
+    }
+    auto cbegin() const
+    {
+        return data.cbegin();
+    }
+    auto end()
+    {
+        return data.end();
+    }
+    auto cend() const
+    {
+        return data.cend();
+    }
+};
 
 
-
-}
 
 
