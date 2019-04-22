@@ -83,25 +83,25 @@ struct vector
 
     //assignment operators
     //addition assignment of vectors (+=)
-    vector<T> operator+=(vector<T> const& v)
+    vector<T> & operator+=(vector<T> const& v)
     {
         detail::transform_vec2(*this,v,*this,add);
         return *this;
     }
     //substraction assignment of vectors (-=)
-    vector<T> operator-=(vector<T> const& v)
+    vector<T> & operator-=(vector<T> const& v)
     {
         detail::transform_vec2(*this,v,*this,sub);
         return *this;
     }
     //multiplication by scalar assignment operator (*=)
-    vector<T> operator*=(T const& scl)
+    vector<T> & operator*=(T const& scl)
     {
         detail::transform_vec1(*this,*this,[&](T const& x){return x*scl;});
         return *this;
     }
     //division by scalar assignment operator (/=)
-    vector<T> operator/=(T const& scl)
+    vector<T> & operator/=(T const& scl)
     {
         detail::transform_vec1(*this,*this,[&](T const& x){return x/scl;});
         return *this;
@@ -134,6 +134,63 @@ struct vector
     }
 };
 
+//-------------------------------------------------------------------------------------------------------
+//addition operator (+)
+//4 types
+template<typename T>
+vector<T> operator+(vector<T> const& v1,vector<T> const& v2)
+{
+    vector<T> result;
+    result.data.resize(v1.data.size());
+    detail::transform_vec2(v1,v2,result,add);
+    return result;
+}
+template<typename T>
+vector<T> && operator+(vector<T> && v1,vector<T> const& v2)
+{
+    detail::transform_vec2(v1,v2,v1,add);
+    return std::move(v1);
+}
+template<typename T>
+vector<T> && operator+(vector<T> const& v1,vector<T> && v2)
+{
+    detail::transform_vec2(v1,v2,v2,add);
+    return std::move(v2);
+}
+template<typename T>
+vector<T> && operator+(vector<T> && v1,vector<T> && v2)
+{
+    detail::transform_vec2(v1,v2,v1,add);
+    return std::move(v1);
+}
 
+//substraction operator (-)
+//4 types
+template<typename T>
+vector<T> operator-(vector<T> const& v1,vector<T> const& v2)
+{
+    vector<T> result;
+    result.data.resize(v1.data.size());
+    detail::transform_vec2(v1,v2,result,sub);
+    return result;
+}
+template<typename T>
+vector<T> && operator-(vector<T> && v1,vector<T> const& v2)
+{
+    detail::transform_vec2(v1,v2,v1,sub);
+    return std::move(v1);
+} 
+template<typename T>
+vector<T> && operator-(vector<T> const& v1,vector<T> && v2)
+{
+    detail::transform_vec2(v1,v2,v2,sub);
+    return std::move(v2);
+}
+template<typename T>
+vector<T> && operator-(vector<T> && v1,vector<T> && v2)
+{
+    detail::transform_vec2(v1,v2,v1,sub);
+    return std::move(v1);
+}
 
 

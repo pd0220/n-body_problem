@@ -16,7 +16,12 @@ set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 17
 
 target_compile_options(${PROJECT_NAME} PRIVATE $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>>:-Wall -Wextra -pedantic>
                                                $<$<CXX_COMPILER_ID:MSVC>:/W4 /permissive->)
-                                                                                              
+                 
+if(BUILD_TESTING)
+  add_executable(vector_add Tests/vector_add.cpp)
+  add_test(NAME vector_add COMMAND vector_add)                                               
+endif(BUILD_TESTING)
+
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 include(CPack)
