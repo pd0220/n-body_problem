@@ -249,3 +249,35 @@ vector<T> && operator/(vector<T> && v,T const& scl)
     return std::move(v);
 }
 
+//-------------------------------------------------------------------------------------------------------
+
+//length and squared length of a vector
+template<typename T>
+T sq_length(vector<T> const& v)
+{
+    return std::accumulate(v.cbegin(),v.cend(),static_cast<T>(0),[&](T const& a,T const& x){return a+x*x;});
+}
+template<typename T>
+T length(vector<T> const& v)
+{
+    return std::sqrt(length(v));
+}
+
+//-------------------------------------------------------------------------------------------------------
+
+//normalizing vector
+template<typename T>
+vector<T> norm(vector<T> const& v)
+{
+    return v/length(v);
+}
+template<typename T>
+vector<T> && norm(vector<T> && v)
+{
+    T L=length(v);
+    return std::move(v/L);
+}
+
+//-------------------------------------------------------------------------------------------------------
+
+
