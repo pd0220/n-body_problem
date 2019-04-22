@@ -135,6 +135,7 @@ struct vector
 };
 
 //-------------------------------------------------------------------------------------------------------
+
 //addition operator (+)
 //4 types
 template<typename T>
@@ -163,6 +164,8 @@ vector<T> && operator+(vector<T> && v1,vector<T> && v2)
     detail::transform_vec2(v1,v2,v1,add);
     return std::move(v1);
 }
+
+//-------------------------------------------------------------------------------------------------------
 
 //substraction operator (-)
 //4 types
@@ -193,4 +196,56 @@ vector<T> && operator-(vector<T> && v1,vector<T> && v2)
     return std::move(v1);
 }
 
+//-------------------------------------------------------------------------------------------------------
+
+//multiplication by scalar (*)
+//2 types (from right)
+template<typename T>
+vector<T> operator*(vector<T> const& v,T const& scl)
+{
+    vector<T> result;
+    result.data.resize(v.data.size());
+    detail::transform_vec1(v,result,[&](T const& x){return x*scl;});
+    return result;
+}
+template<typename T>
+vector<T> && operator*(vector<T> && v,T const& scl)
+{
+    detail::transform_vec1(v,v,[&](T const& x){return x*scl;});
+    return std::move(v);
+}
+//2 types (from left)
+template<typename T>
+vector<T> operator*(T const& scl,vector<T> const& v)
+{
+    vector<T> result;
+    result.data.resize(v.data.size());
+    detail::transform_vec1(v,result,[&](T const& x){return scl*x;});
+    return result;
+}
+template<typename T>
+vector<T> && operator*(T const& scl,vector<T> && v)
+{
+    detail::transform_vec1(v,v,[&](T const& x){return scl*x;});
+    return std::move(v);
+}
+
+//-------------------------------------------------------------------------------------------------------
+
+//division by scalar
+//2 types
+template<typename T>
+vector<T> operator/(vector<T> const& v,T const& scl)
+{
+    vector<T> result;
+    result.data.resize(v.data.size());
+    detail::transform_vec1(v,result,[&](T const& x){return x/scl;});
+    return result;
+}
+template<typename T>
+vector<T> && operator/(vector<T> && v,T const& scl)
+{
+    detail::transform_vec1(v,v,[&](T const& x){return x/scl;});
+    return std::move(v);
+}
 
