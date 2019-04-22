@@ -27,5 +27,6 @@ int main(int, char**)
     double h=1e-4;
     solve_RK4(y0,t0,t0+1,h,LV_system,to_file);
 
+    std::cout<<"Everything seems to be fine... for now."<<std::endl;
     return 0;
 }
