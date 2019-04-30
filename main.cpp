@@ -1,20 +1,11 @@
-#include "vector.hh"
+#include "state.hh"
 #include "num_int.hh"
 
 //main function
 int main(int, char**)
 {    
-    //3-body problem (Earth+Jupiter+Sun)
-    //parameters
-    //gravitational constant -> G
-    const double G=6.6741e-11;
-    //mass of Earth -> m2
-    const double m2=5.9722e24;
-    //mass of Jupiter -> m1
-    const double m1=1.889e27;
-    //mass of Sun -> m3
-    const double m3=1.9885e30;
-
+    
+/*
     //RHS Jupiter->Earth->Sun
     auto kepler=[&](double t,vector<double> s)->vector<double>{return 
     {s[3],s[4],s[5],
@@ -34,12 +25,10 @@ int main(int, char**)
     //initial condition
     //distance in m
     //velocity in m/s
-    double SunEarth_dist=1.52097701e11;
-    double Earth_vel=2.9783e4;
-    double SunJupiter_dist=8.16081455e11;
-    double Jupiter_vel=1.2446e4;
-
-    //initial condition
+    const double SunEarth_dist=1.52097701e11;
+    const double Earth_vel=2.9783e4;
+    const double SunJupiter_dist=8.16081455e11;
+    const double Jupiter_vel=1.2446e4;
     //Jupiter:x,y,z,vx,vy,vz
     //Earth:x,y,z,vx,vy,vz
     //Sun:x,y,z,vx,vy,vz
@@ -57,6 +46,6 @@ int main(int, char**)
     double t1=5e8;
     double h=1e4;
     solve_RK4(y0,t0,t1,h,kepler,to_file);
-    
+*/ 
     return 0;
 }
