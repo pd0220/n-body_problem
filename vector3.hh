@@ -68,12 +68,12 @@ std::istream& operator>>(std::istream& i,vector3<T> & v)
     std::getline(i,tmp);
     std::stringstream ii(tmp);
 
-    std::getline(ii,tmp,',');
+    std::getline(ii,tmp,' ');
     if(tmp.size()==0){restore_stream();return i;}
     std::stringstream vx_ss(tmp);
     vx_ss>>v.x;
 
-    std::getline(ii,tmp,',');
+    std::getline(ii,tmp,' ');
     if(tmp.size()==0){restore_stream();return i;}
     std::stringstream vy_ss(tmp);
     vy_ss>>v.y;

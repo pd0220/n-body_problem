@@ -1,28 +1,12 @@
 #include "vector3.hh"
+#include <array>
 
-//state for a given 4 planet
+//state for given 4 planet
 //positions and velocities in a 3-dimensional space (r and v vectors)
+//used in RK4 method
 template<typename T>
-struct state
+struct state_vector
 {
-    vector3<T> SUN_R;
-    vector3<T> SUN_V;
-    vector3<T> EARTH_R;
-    vector3<T> EARTH_V;
-    vector3<T> JUPITER_R;
-    vector3<T> JUPITER_V;
-    vector3<T> ASTEROID_R;
-    vector3<T> ASTEROID_V;
+    //in order: SUN_R,SUN_V,EARTH_R,EARTH_V,JUPITER_R,JUPITER_V,ASTEROID_R,ASTEROID_V;
+    std::array<vector3<T>,8> state;
 };
-
-//parameters
-//gravitational constant (m^3*kg^-1*s*-2)
-const double G=6.6741e-11;
-//mass of Jupiter (kg)
-const double JUPITER_M=1.889e27;
-//mass of Earth (kg)
-const double EARTH_M=5.9722e24;
-//mass of Sun (kg)
-const double SUN_M=1.9885e30;
-//mas of asteroid (kg)
-const double ASTEROID_M=1e5;
