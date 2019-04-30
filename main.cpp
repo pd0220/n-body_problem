@@ -8,10 +8,10 @@ int main(int, char**)
     //parameters
     //gravitational constant -> G
     const double G=6.6741e-11;
-    //mass of Earth -> m1
+    //mass of Earth -> m2
     const double m2=5.9722e24;
-    //mass of Moon -> m2
-    const double m1=7.3477e22;
+    //mass of Jupiter -> m1
+    const double m1=1.889e27;
     //mass of Sun -> m3
     const double m3=1.9885e30;
 
@@ -34,17 +34,16 @@ int main(int, char**)
     //initial condition
     //distance in m
     //velocity in m/s
-    double SunEarth_dist=1.496e11;
-    double EarthMoon_dist=3.84499e8;
-    double SunMoon_dist=SunEarth_dist+EarthMoon_dist;
-    double Earth_vel=2.978e4;
-    double Moon_vel=1.022e3+Earth_vel;
-    
+    double SunEarth_dist=1.52097701e11;
+    double Earth_vel=2.9783e4;
+    double SunJupiter_dist=8.16081455e11;
+    double Jupiter_vel=1.2446e4;
+
     //initial condition
-    //Moon:x,y,z,vx,vy,vz
+    //Jupiter:x,y,z,vx,vy,vz
     //Earth:x,y,z,vx,vy,vz
     //Sun:x,y,z,vx,vy,vz
-    vector<double> y0{0.,SunMoon_dist,0.,Moon_vel,0.,0.,
+    vector<double> y0{0.,SunJupiter_dist,0.,Jupiter_vel,0.,0.,
                       0.,SunEarth_dist,0.,Earth_vel,0.,0.,
                       0.,0.,0.,0.,0.,0.};
 
@@ -55,8 +54,8 @@ int main(int, char**)
 
     //RK4
     double t0=0.;
-    double t1=1e6;
-    double h=10;
+    double t1=5e8;
+    double h=1e4;
     solve_RK4(y0,t0,t1,h,kepler,to_file);
     
     return 0;
