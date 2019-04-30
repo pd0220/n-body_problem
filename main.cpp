@@ -4,7 +4,7 @@
 //main function
 int main(int, char**)
 {    
-    //3-body problem (Earth+Moon+Sun)
+    //3-body problem (Earth+Jupiter+Sun)
     //parameters
     //gravitational constant -> G
     const double G=6.6741e-11;
@@ -15,7 +15,7 @@ int main(int, char**)
     //mass of Sun -> m3
     const double m3=1.9885e30;
 
-    //RHS Moon->Earth->Sun
+    //RHS Jupiter->Earth->Sun
     auto kepler=[&](double t,vector<double> s)->vector<double>{return 
     {s[3],s[4],s[5],
     -G*m2*(s[0]-s[6])/std::pow((s[0]-s[6])*(s[0]-s[6])+(s[1]-s[7])*(s[1]-s[7])+(s[2]-s[8])*(s[2]-s[8]),1.5)-G*m3*(s[0]-s[12])/std::pow((s[0]-s[12])*(s[0]-s[12])+(s[1]-s[13])*(s[1]-s[13])+(s[2]-s[14])*(s[2]-s[14]),1.5),
