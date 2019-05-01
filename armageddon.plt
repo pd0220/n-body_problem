@@ -1,12 +1,16 @@
 set term png size 1280,720
 set out "armageddon.png"
 
-set title "Numerical simulation of the solar system."
+set title "Numerical simulation of the solar system." font ",20"
 
 set autoscale
 
-set xlabel "x"
-set ylabel "y"
-set zlabel "z"
+set xlabel "x" font ",15"
+set ylabel "y" font ",15"
+set zlabel "z" font ",15"
 
-splot "armageddon.dat" using 1:2:3, "armageddon.dat" using 4:5:6, "armageddon.dat" using 7:8:9, "armageddon.dat" using 10:11:12 with lines
+set xtics font ", 7"
+set ytics font ", 7"
+set ztics font ", 7"
+
+splot "armageddon.txt" using 1:2:3 title "Sun" with line, "armageddon.txt" using 4:5:6 title "Earth" with line, "armageddon.txt" using 7:8:9 title "Jupiter" with line, "armageddon.txt" using 10:11:12 title "Asteroid" with line

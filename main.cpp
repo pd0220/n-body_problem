@@ -70,7 +70,7 @@ int main(int, char**)
     auto to_file=[&](double t,state<double> s)
     {
         std::ofstream file;
-        file.open("armageddon.dat",std::fstream::app);
+        file.open("armageddon.txt",std::fstream::app);
         file<<s.SUN_R<<" ";
         file<<s.EARTH_R<<" ";
         file<<s.JUPITER_R<<" ";
@@ -80,8 +80,8 @@ int main(int, char**)
     //short run
     //RK4
     double t0=0.;
-    double t1=1e9;
-    double h=1e6;
+    double t1=1e11;
+    double h=1e5;
     solve_RK4(y0,t0,t1,h,armageddon,to_file);
 
     //long run with stable orbit for asteroid
@@ -92,6 +92,6 @@ int main(int, char**)
     double h=1e6;
     solve_RK4(y0,t0,t1,h,armageddon,to_file);
     */
-   
+
     return 0;
 }
