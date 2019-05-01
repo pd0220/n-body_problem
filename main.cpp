@@ -77,11 +77,21 @@ int main(int, char**)
         file<<s.ASTEROID_R<<"\n";
     };
 
-    //RK4 run
+    //short run
+    //RK4
+    double t0=0.;
+    double t1=1e9;
+    double h=1e6;
+    solve_RK4(y0,t0,t1,h,armageddon,to_file);
+
+    //long run with stable orbit for asteroid
+    /*
+    //RK4
     double t0=0.;
     double t1=4e10;
     double h=1e6;
     solve_RK4(y0,t0,t1,h,armageddon,to_file);
-
+    */
+   
     return 0;
 }

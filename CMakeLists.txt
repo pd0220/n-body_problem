@@ -9,6 +9,27 @@ if (MSVC)
 endif (MSVC)
 
 add_executable(n_body_simulation main.cpp)
+#CMake Pipeline begin
+add_executable(CMakePipeline main.cpp)
+
+add_custom_command(COMMAND CMakePipeline
+                   WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+                   OUTPUT ${CMAKE_BINARY_DIR}/armageddon.dat
+                   DEPENDS CMakePipeline
+                   COMMENT "generating data set")
+
+add_custom_target(data ALL DEPENDS ${CMAKE_BINARY_DIR}/armageddon.dat)
+
+find_package (Gnuplot REQUIRED)
+
+add_custom_command(COMMAND ${GNUPLOT_EXECUTABLE} ${PROJECT_SOURCE_DIR}/armageddon.plt
+                   WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+                   OUTPUT ${CMAKE_BINARY_DIR}/armageddon.png
+                   DEPENDS ${PROJECT_SOURCE_DIR}/armageddon.plt data
+                   COMMENT "generating plot")
+
+add_custom_target(plot ALL DEPENDS ${CMAKE_BINARY_DIR}/armageddon.png)
+#CMake pipeline end             
 
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 17
                                                  CXX_STANDARD_REQUIRED ON
