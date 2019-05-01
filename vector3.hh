@@ -54,7 +54,7 @@ struct vector3
 template<typename T>
 std::ostream& operator<<(std::ostream& o,vector3<T> const& v)
 {
-    o<<v.x<<","<<v.y<<","<<v.z;
+    o<<v.x<<" "<<v.y<<" "<<v.z;
     return o;
 }
 

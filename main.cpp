@@ -17,32 +17,31 @@ int main(int, char**)
     const double ASTEROID_M=1e5;
     
     //RHS for Jupiter-Earth-Sun-asteroid
-    auto armageddon=[&](double t,state_vector<double> s)->state_vector<double>{return
+    auto armageddon=[&](double t,state<double> s)->state<double>{return
     {
-        s.state[1],
+        s.SUN_V,
 
-        -G*EARTH_M*(s.state[0]-s.state[2])/std::pow(length(s.state[0]-s.state[2]),3)
-        -G*JUPITER_M*(s.state[0]-s.state[4])/std::pow(length(s.state[0]-s.state[4]),3)
-        -G*ASTEROID_M*(s.state[0]-s.state[6])/std::pow(length(s.state[0]-s.state[6]),3),
+        -G*EARTH_M*(s.SUN_R-s.EARTH_R)/std::pow(length(s.SUN_R-s.EARTH_R),3)
+        -G*JUPITER_M*(s.SUN_R-s.JUPITER_R)/std::pow(length(s.SUN_R-s.JUPITER_R),3)
+        -G*ASTEROID_M*(s.SUN_R-s.ASTEROID_R)/std::pow(length(s.SUN_R-s.ASTEROID_R),3),
 
-        s.state[3],
+        s.EARTH_V,
 
-        -G*SUN_M*(s.state[2]-s.state[0])/std::pow(length(s.state[2]-s.state[0]),3)
-        -G*JUPITER_M*(s.state[2]-s.state[4])/std::pow(length(s.state[2]-s.state[4]),3)
-        -G*ASTEROID_M*(s.state[2]-s.state[6])/std::pow(length(s.state[2]-s.state[6]),3),
+        -G*SUN_M*(s.EARTH_R-s.SUN_R)/std::pow(length(s.EARTH_R-s.SUN_R),3)
+        -G*JUPITER_M*(s.EARTH_R-s.JUPITER_R)/std::pow(length(s.EARTH_R-s.JUPITER_R),3)
+        -G*ASTEROID_M*(s.EARTH_R-s.ASTEROID_R)/std::pow(length(s.EARTH_R-s.ASTEROID_R),3),
 
-        s.state[5],
+        s.JUPITER_V,
 
-        -G*EARTH_M*(s.state[4]-s.state[2])/std::pow(length(s.state[4]-s.state[2]),3)
-        -G*SUN_M*(s.state[4]-s.state[0])/std::pow(length(s.state[4]-s.state[0]),3)
-        -G*ASTEROID_M*(s.state[4]-s.state[6])/std::pow(length(s.state[4]-s.state[6]),3),
+        -G*SUN_M*(s.JUPITER_R-s.SUN_R)/std::pow(length(s.JUPITER_R-s.SUN_R),3)
+        -G*EARTH_M*(s.JUPITER_R-s.EARTH_R)/std::pow(length(s.JUPITER_R-s.EARTH_R),3)
+        -G*ASTEROID_M*(s.JUPITER_R-s.ASTEROID_R)/std::pow(length(s.JUPITER_R-s.ASTEROID_R),3),
 
-        s.state[7],
+        s.ASTEROID_V,
 
-        -G*EARTH_M*(s.state[6]-s.state[2])/std::pow(length(s.state[6]-s.state[2]),3)
-        -G*JUPITER_M*(s.state[6]-s.state[4])/std::pow(length(s.state[6]-s.state[4]),3)
-        -G*SUN_M*(s.state[6]-s.state[0])/std::pow(length(s.state[6]-s.state[0]),3)};
-    };
+        -G*SUN_M*(s.ASTEROID_R-s.SUN_R)/std::pow(length(s.ASTEROID_R-s.SUN_R),3)
+        -G*EARTH_M*(s.ASTEROID_R-s.EARTH_R)/std::pow(length(s.ASTEROID_R-s.EARTH_R),3)
+        -G*JUPITER_M*(s.ASTEROID_R-s.JUPITER_R)/std::pow(length(s.ASTEROID_R-s.JUPITER_R),3)};};
 
     //initial conditions
     //distance (m)
@@ -62,22 +61,30 @@ int main(int, char**)
     vector3<double> ASTEROID_R{0.,Asteroidy,Asteroidz};
     vector3<double> ASTEROID_V{1e4,0.,0.};
 
-    state_vector<double> y0{SUN_R,SUN_V,
+    state<double> y0{SUN_R,SUN_V,
                             EARTH_R,EARTH_V,
                             JUPITER_R,JUPITER_V,
                             ASTEROID_R,ASTEROID_V};
 
     //to file
-    auto to_file=[&](double t,state_vector<double> y)
+    auto to_file=[&](double t,state<double> s)
     {
         std::ofstream file;
-        file.open("num_int.txt",std::fstream::app);
-        file<<t<<" ";for(int i{0};i<=7;i++){file<<y.state[i]<<" ";}file<<"\n";
+        file.open("armageddon.txt",std::fstream::app);
+        file<<t<<" ";
+        file<<s.SUN_R<<" ";
+        file<<s.SUN_V<<" ";
+        file<<s.EARTH_R<<" ";
+        file<<s.EARTH_V<<" " ;
+        file<<s.JUPITER_R<<" ";
+        file<<s.JUPITER_V<<" ";
+        file<<s.ASTEROID_R<<" ";
+        file<<s.ASTEROID_V<<"\n";
     };
 
-    //RK4
+    //RK4 run
     double t0=0.;
-    double t1=5e8;
+    double t1=5e10;
     double h=1e4;
     solve_RK4(y0,t0,t1,h,armageddon,to_file);
 
