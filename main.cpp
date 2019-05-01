@@ -59,33 +59,28 @@ int main(int, char**)
     vector3<double> JUPITER_R{0.,SunJupiter_dist,0.};
     vector3<double> JUPITER_V{Jupiter_vel,0.,0.,};
     vector3<double> ASTEROID_R{0.,Asteroidy,Asteroidz};
-    vector3<double> ASTEROID_V{1e4,0.,0.};
+    vector3<double> ASTEROID_V{2e3,0.,0.};
 
     state<double> y0{SUN_R,SUN_V,
-                            EARTH_R,EARTH_V,
-                            JUPITER_R,JUPITER_V,
-                            ASTEROID_R,ASTEROID_V};
+                    EARTH_R,EARTH_V,
+                    JUPITER_R,JUPITER_V,
+                    ASTEROID_R,ASTEROID_V};
 
     //to file
     auto to_file=[&](double t,state<double> s)
     {
         std::ofstream file;
-        file.open("armageddon.txt",std::fstream::app);
-        file<<t<<" ";
+        file.open("armageddon.dat",std::fstream::app);
         file<<s.SUN_R<<" ";
-        file<<s.SUN_V<<" ";
         file<<s.EARTH_R<<" ";
-        file<<s.EARTH_V<<" " ;
         file<<s.JUPITER_R<<" ";
-        file<<s.JUPITER_V<<" ";
-        file<<s.ASTEROID_R<<" ";
-        file<<s.ASTEROID_V<<"\n";
+        file<<s.ASTEROID_R<<"\n";
     };
 
     //RK4 run
     double t0=0.;
-    double t1=5e10;
-    double h=1e4;
+    double t1=4e10;
+    double h=1e6;
     solve_RK4(y0,t0,t1,h,armageddon,to_file);
 
     return 0;
