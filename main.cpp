@@ -53,15 +53,15 @@ int main(int, char**)
     const double Asteroidy=1e13;
     const double Asteroidz=1e13/std::sqrt(2);
     
-    vector3<double> SUN_R,SUN_V;
-    vector3<double> EARTH_R{0.,SunEarth_dist,0.};
-    vector3<double> EARTH_V{Earth_vel,0.,0.};
-    vector3<double> JUPITER_R{0.,SunJupiter_dist,0.};
-    vector3<double> JUPITER_V{Jupiter_vel,0.,0.,};
-    vector3<double> ASTEROID_R{0.,Asteroidy,Asteroidz};
-    vector3<double> ASTEROID_V{2e3,0.,0.};
+    const vector3<double> SUN_R,SUN_V;
+    const vector3<double> EARTH_R{0.,SunEarth_dist,0.};
+    const vector3<double> EARTH_V{Earth_vel,0.,0.};
+    const vector3<double> JUPITER_R{0.,SunJupiter_dist,0.};
+    const vector3<double> JUPITER_V{Jupiter_vel,0.,0.,};
+    const vector3<double> ASTEROID_R{0.,Asteroidy,Asteroidz};
+    const vector3<double> ASTEROID_V{2e3,0.,0.};
 
-    state<double> y0{SUN_R,SUN_V,
+    const state<double> y0{SUN_R,SUN_V,
                     EARTH_R,EARTH_V,
                     JUPITER_R,JUPITER_V,
                     ASTEROID_R,ASTEROID_V};
@@ -81,10 +81,10 @@ int main(int, char**)
 
     //short run
     //RK4
-    double t0=0.;
-    double t1=1e10;
-    double h=1e5;
-    double delta_0=1e14;
+    const double t0=0.;
+    const double t1=1e10;
+    const double h=1e5;
+    const double delta_0=1e14;
     solve_RK4_adapt(y0,t0,t1,h,armageddon,to_file_with_size,delta_0);
     //solve_RK4(y0,t0,t1,h,armageddon,to_file_with_size);
 
