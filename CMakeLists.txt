@@ -49,7 +49,6 @@ if(BUILD_TESTING)
   add_test(NAME vector3_func COMMAND vector3_func)
 endif(BUILD_TESTING)
                 
-
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 include(CPack)

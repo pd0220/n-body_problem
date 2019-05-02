@@ -67,6 +67,17 @@ int main(int, char**)
                     ASTEROID_R,ASTEROID_V};
 
     //to file
+    auto to_file_with_size=[&](double t,state<double> s,double dt)
+    {
+        std::ofstream file;
+        file.open("armageddon.txt",std::fstream::app);
+        file<<s.SUN_R<<" ";
+        file<<s.EARTH_R<<" ";
+        file<<s.JUPITER_R<<" ";
+        file<<s.ASTEROID_R<<" ";
+        file<<dt<<"\n";
+    };
+
     auto to_file=[&](double t,state<double> s)
     {
         std::ofstream file;
@@ -80,8 +91,10 @@ int main(int, char**)
     //short run
     //RK4
     double t0=0.;
-    double t1=1e11;
+    double t1=1e9;
     double h=1e5;
+    double delta_0=1e3;
+    //solve_RK4_adapt(y0,t0,t1,h,armageddon,to_file,delta_0);
     solve_RK4(y0,t0,t1,h,armageddon,to_file);
 
     //long run with stable orbit for asteroid
