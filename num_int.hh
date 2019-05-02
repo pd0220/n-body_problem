@@ -21,7 +21,7 @@ auto solve_RK4(State y0,T t0,T t1,T h,RHS f,Callback cb)
 
         y=y+(k1+k4+(T)2*(k2+k3))*(h/(T)6);
         t=t+h;
-        cb(t,y);
+        cb(t,y,h);
     }
     return y;
 }
@@ -43,7 +43,7 @@ auto solve_Euler(State y0,T t0,T t1,T h,RHS f,Callback cb)
 
         y=y+h*f(t,y);
         t=t+h;
-        cb(t,y);
+        cb(t,y,h);
     }
 }
 
@@ -82,11 +82,11 @@ auto solve_RK4_adapt(State y0,T t0,T t1,T h,RHS f,Callback cb,T Delta_0)
         T h_0=(T)0;
         if(Delta_0>=Delta)
         {
-            h_0=0.9*h*std::pow(std::abs(Delta_0/Delta),0.2);
+            h_0=h*std::pow(std::abs(Delta_0/Delta),0.2);
         }
         else
         {
-            h_0=0.9*h*std::pow(std::abs(Delta_0/Delta),0.25);
+            h_0=h*std::pow(std::abs(Delta_0/Delta),0.25);
         }
 
         //final RK4 step

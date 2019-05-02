@@ -100,5 +100,5 @@ T norm(state<T> const& s)
     return (T)std::sqrt(sq_length(s.SUN_R)+sq_length(s.SUN_V)
           +sq_length(s.EARTH_R)+sq_length(s.EARTH_V)
           +sq_length(s.JUPITER_R)+sq_length(s.JUPITER_V)
-          +sq_length(s.ASTEROID_R)+sq_length(s.ASTEROID_V));
+          +sq_length(s.ASTEROID_R)+sq_length(s.ASTEROID_V))/(T)24;
 }

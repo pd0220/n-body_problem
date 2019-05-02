@@ -20,7 +20,7 @@ add_custom_command(COMMAND ${GNUPLOT_EXECUTABLE} ${PROJECT_SOURCE_DIR}/armageddo
                    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                    OUTPUT ${PROJECT_SOURCE_DIR}/armageddon.png
                    DEPENDS ${PROJECT_SOURCE_DIR}/armageddon.plt data
-                   COMMENT "generating plot")
+                   COMMENT "Generating plot")
 
 add_custom_target(plot ALL DEPENDS ${PROJECT_SOURCE_DIR}/armageddon.png)
 #CMake pipeline end             
