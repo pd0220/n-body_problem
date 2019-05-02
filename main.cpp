@@ -94,8 +94,8 @@ int main(int, char**)
     double t1=1e9;
     double h=1e5;
     double delta_0=1e4;
-    //solve_RK4_adapt(y0,t0,t1,h,armageddon,to_file,delta_0);
-    solve_RK4(y0,t0,t1,h,armageddon,to_file);
+    solve_RK4_adapt(y0,t0,t1,h,armageddon,to_file,delta_0);
+    //solve_RK4(y0,t0,t1,h,armageddon,to_file);
 
     //long run with stable orbit for asteroid
     /*
