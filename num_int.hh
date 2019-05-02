@@ -44,3 +44,7 @@ auto solve_Euler(State y0,T t0,T t1,T h,RHS f,Callback cb)
         cb(t,y);
     }
 }
+
+//adaptive RK4 method implementation for numerical integration
+template<typename State,typename T,typename RHS,typename Callback>
+auto solve_RK4_adapt(){}

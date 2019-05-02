@@ -31,6 +31,23 @@ set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 17
 
 target_compile_options(${PROJECT_NAME} PRIVATE $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>>:-Wall -Wextra -pedantic>
                                                $<$<CXX_COMPILER_ID:MSVC>:/W4 /permissive->)
+
+if(BUILD_TESTING)
+  add_executable(vector3_add Tests/vector3_add.cpp)
+  add_test(NAME vector3_add COMMAND vector3_add)
+  
+  add_executable(vector3_sub Tests/vector3_sub.cpp)
+  add_test(NAME vector3_sub COMMAND vector3_sub)
+
+  add_executable(vector3_divscl Tests/vector3_divscl.cpp)
+  add_test(NAME vector3_divscl COMMAND vector3_divscl)
+
+  add_executable(vector3_mulscl Tests/vector3_mulscl.cpp)
+  add_test(NAME vector3_mulscl COMMAND vector3_mulscl)
+
+  add_executable(vector3_func Tests/vector3_func.cpp)
+  add_test(NAME vector3_func COMMAND vector3_func)
+endif(BUILD_TESTING)
                 
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
