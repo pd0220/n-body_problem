@@ -60,7 +60,26 @@ int main(int, char**)
     
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-    //RHS for Jupiter-Earth-Sun-asteroid
+    //RHS for Sun-Earth-Asteroid
+    auto armageddon3=[&](double t,state3<double> s)->state3<double>{return
+    {
+        s.SUN_V,
+
+        -G*EARTH_M*(s.SUN_R-s.EARTH_R)/std::pow(length(s.SUN_R-s.EARTH_R),3)
+        -G*ASTEROID_M*(s.SUN_R-s.ASTEROID_R)/std::pow(length(s.SUN_R-s.ASTEROID_R),3),
+
+        s.EARTH_V,
+
+        -G*SUN_M*(s.EARTH_R-s.SUN_R)/std::pow(length(s.EARTH_R-s.SUN_R),3)
+        -G*ASTEROID_M*(s.EARTH_R-s.ASTEROID_R)/std::pow(length(s.EARTH_R-s.ASTEROID_R),3),
+
+        s.ASTEROID_V,
+
+        -G*SUN_M*(s.ASTEROID_R-s.SUN_R)/std::pow(length(s.ASTEROID_R-s.SUN_R),3)
+        -G*EARTH_M*(s.ASTEROID_R-s.EARTH_R)/std::pow(length(s.ASTEROID_R-s.EARTH_R),3)
+    };}; 
+
+    //RHS for Sun-Earth-Jupiter-asteroid
     auto armageddon4=[&](double t,state4<double> s)->state4<double>{return
     {
         s.SUN_V,
@@ -143,10 +162,23 @@ int main(int, char**)
     auto clock1=std::chrono::high_resolution_clock::now();
 
     //"measuring" time
-    double time_clock=(static_cast<std::chrono::duration<double,std::milli>>(clock1-clock0)).count();
-    std::cout<<"Overall integration time for 4 planets: "<<time_clock<<" ms."<<std::endl;
+    double time_clock4=(static_cast<std::chrono::duration<double,std::milli>>(clock1-clock0)).count();
+    std::cout<<"Overall integration time for 4 planets: "<<time_clock4<<" ms."<<std::endl;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+    //clock2
+    auto clock2=std::chrono::high_resolution_clock::now();
+
+    //RK4 for 3 planets
+    solve_RK4_adapt(y03,t0,t1,h,armageddon3,to_file3,delta0);
+
+    //clock3
+    auto clock3=std::chrono::high_resolution_clock::now();
+
+    //"measuring" time
+    double time_clock3=(static_cast<std::chrono::duration<double,std::milli>>(clock3-clock2)).count();
+    std::cout<<"Overall integration time for 3 planets: "<<time_clock3<<" ms."<<std::endl;
 
     return 0;
 }
