@@ -87,7 +87,6 @@ int main(int, char**)
     const double h=1e3;
     const double delta0=1e-4;
 
-
     //clock0
     auto clock0=std::chrono::high_resolution_clock::now();
 

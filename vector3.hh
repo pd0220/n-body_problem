@@ -139,7 +139,7 @@ T length(vector3<T> const& v)
 //random vector with given length (radius of circular orbit)
 //will be used to generate randomly chosen initial conditions for planets
 template<typename T>
-vector3<T> rand_vec_2D(T R)
+vector3<T> rand_vec_2D(T const& R)
 {
     //random number generation
     std::random_device rd{};
@@ -153,7 +153,7 @@ vector3<T> rand_vec_2D(T R)
 //random vector with given length (radius of circular orbit)
 //will be used to generate randomly chosen initial conditions for the asteroid
 template<typename T>
-vector3<T> rand_vec_3D(T R)
+vector3<T> rand_vec_3D(T const& R)
 {
     //random number generation
     std::random_device rd{};
@@ -171,4 +171,24 @@ vector3<T> rand_vec_3D(T R)
     T cos_phi=std::cos(phi);
 
     return R*vector3<T>{sin_theta*cos_phi,sin_theta*sin_phi,cos_theta};
+}
+
+//normalize a vector
+template<typename T>
+vector3<T> norm(vector3<T> const& v)
+{
+    if(v.x==(T)0 && v.y==(T)0 && v.z==(T)0)
+    {
+        std::cout<<"ERROR\nLenght of vector cannot be interpreted."<<std::endl;
+        exit(-1);
+    }
+    return v/length(v);
+}
+
+//find a specific perpendicular unit vector for a given vector
+template<typename T>
+vector3<T> perp_unit_vec(vector3<T> const& v)
+{
+    vector3<T> res{v.y,-v.x,v.z};
+    return norm(res);
 }

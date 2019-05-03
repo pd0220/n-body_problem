@@ -51,7 +51,7 @@ auto solve_Euler(State y0,T t0,T t1,T h,RHS f,Callback cb)
 //adaptive RK4 method implementation for numerical integration
 //via one RK4 and one RK5 step
 template<typename State,typename T,typename RHS,typename Callback>
-auto solve_RK4_adapt(State y0,T t0,T t1,T h,RHS f,Callback cb,T Delta0)
+auto solve_RK4_adapt(State y0,T t0,T t1,T h,RHS f,Callback cb,T const& Delta0)
 {
     //setting initial values
     T t=t0;
