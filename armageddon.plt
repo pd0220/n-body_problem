@@ -1,7 +1,7 @@
 set term png size 1280,720
 set out "armageddon.png"
 
-set title "Numerical simulation of the solar system via adaptive fourth-order Runge-Kutta method." font ",20"
+set title "Numerical simulation of the Solar System\nwith adaptive fourth-order Runge-Kutta method." font ",20"
 
 set autoscale
 

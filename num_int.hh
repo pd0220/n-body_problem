@@ -155,7 +155,8 @@ auto solve_RK4_adapt(State y0,T t0,T t1,T h,RHS f,Callback cb,T Delta0)
         State k3f=f(t+h0*(T)0.5,y+(h0*(T)0.5)*k2f);
         State k4f=f(t+h0,y+h0*k3f);
 
-        y=y+(k1f+k4f+(T)2*(k2f+k3f))*(h0/(T)6);        
+        y=y+(k1f+k4f+(T)2*(k2f+k3f))*(h0/(T)6);
+        y_test=y+(k1f+k4f+(T)2*(k2f+k3f))*(h0/(T)6);
         t=t+h0;
         cb(t,y,h0);
     }
