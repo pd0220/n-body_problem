@@ -1,5 +1,6 @@
 #include "state.hh"
 #include "num_int.hh"
+#include <chrono>
 
 //main function
 int main(int, char**)
@@ -85,9 +86,20 @@ int main(int, char**)
     t0=0.;
     const double t1=5e9;
     const double h=1e3;
-    const double delta0=1e-6;
+    const double delta0=1e-4;
+
+    //clock0
+    auto clock0=std::chrono::high_resolution_clock::now();
+
+    //RK4
     solve_RK4_adapt(y0,t0,t1,h,armageddon,to_file_with_size,delta0);
-    //solve_RK4(y0,t0,t1,h,armageddon,to_file_with_size);
+
+    //clock1
+    auto clock1=std::chrono::high_resolution_clock::now();
+
+    //"measuring" time
+    double time_clock=(static_cast<std::chrono::duration<double,std::milli>>(clock1-clock0)).count();
+    std::cout<<"Overall integration time: "<<time_clock<<" ms."<<std::endl;
 
     return 0;
 }
