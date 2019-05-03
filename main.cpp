@@ -8,15 +8,42 @@ int main(int, char**)
     //parameters
     //gravitational constant (m^3*kg^-1*s*-2)
     const double G=6.6741e-11;
+
     //mass of Jupiter (kg)
     const double JUPITER_M=1.889e27;
+
     //mass of Earth (kg)
     const double EARTH_M=5.9722e24;
+
     //mass of Sun (kg)
     const double SUN_M=1.9885e30;
+
     //mas of asteroid (kg)
     const double ASTEROID_M=1e5;
+
+    //average distance of Sun and Earth (m)
+    const double EARTH_AVG=1.496e11;
+
+    //average distance of Sun and Jupiter (m)
+    const double JUPITER_AVG=7.785e11;
+
+    //average distance of Sun and the inner border of the Oort cloud (m)
+    const double ASTEROID_AVG=1e13;
+
+    //initial conditions
+    //distance (m)
+    //velocity (m/s)
+    const double Earth_vel=2.978e4;
+    const double Jupiter_vel=1.3071e4;
     
+    const vector3<double> SUN_R,SUN_V;
+    const vector3<double> EARTH_R=rand_vec_2D(EARTH_AVG);
+    const vector3<double> EARTH_V=Earth_vel*perp_unit_vec(EARTH_R);
+    const vector3<double> JUPITER_R=rand_vec_2D(JUPITER_AVG);
+    const vector3<double> JUPITER_V=Jupiter_vel*perp_unit_vec(JUPITER_R);
+    const vector3<double> ASTEROID_R=rand_vec_3D(ASTEROID_AVG);
+    const vector3<double> ASTEROID_V=2e3*perp_unit_vec(ASTEROID_R);
+
     //RHS for Jupiter-Earth-Sun-asteroid
     auto armageddon=[&](double t,state<double> s)->state<double>{return
     {
@@ -43,24 +70,6 @@ int main(int, char**)
         -G*SUN_M*(s.ASTEROID_R-s.SUN_R)/std::pow(length(s.ASTEROID_R-s.SUN_R),3)
         -G*EARTH_M*(s.ASTEROID_R-s.EARTH_R)/std::pow(length(s.ASTEROID_R-s.EARTH_R),3)
         -G*JUPITER_M*(s.ASTEROID_R-s.JUPITER_R)/std::pow(length(s.ASTEROID_R-s.JUPITER_R),3)};};
-
-    //initial conditions
-    //distance (m)
-    //velocity (m/s)
-    const double SunEarth_dist=1.52097701e11;
-    const double Earth_vel=2.9783e4;
-    const double SunJupiter_dist=8.16081455e11;
-    const double Jupiter_vel=1.2446e4;
-    const double Asteroidy=1e13;
-    const double Asteroidz=1e13/std::sqrt(2);
-    
-    const vector3<double> SUN_R,SUN_V;
-    const vector3<double> EARTH_R{0.,SunEarth_dist,0.};
-    const vector3<double> EARTH_V{Earth_vel,0.,0.};
-    const vector3<double> JUPITER_R{0.,SunJupiter_dist,0.};
-    const vector3<double> JUPITER_V{Jupiter_vel,0.,0.,};
-    const vector3<double> ASTEROID_R{0.,Asteroidy,Asteroidz};
-    const vector3<double> ASTEROID_V{2e3,0.,0.};
 
     const state<double> y0{SUN_R,SUN_V,
                     EARTH_R,EARTH_V,

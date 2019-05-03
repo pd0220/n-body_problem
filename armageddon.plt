@@ -5,6 +5,10 @@ set title "Numerical simulation of the Solar System\nwith adaptive fourth-order 
 
 set autoscale
 
+set xzeroaxis
+set yzeroaxis
+set zzeroaxis
+
 set xlabel "x" font ",15"
 set ylabel "y" font ",15"
 set zlabel "z" font ",15"
