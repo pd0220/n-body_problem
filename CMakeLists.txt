@@ -12,17 +12,17 @@ add_executable(n_body_simulation main.cpp)
 #CMake Pipeline begin
 add_executable(CMakePipeline main.cpp)
 
-add_custom_target(data ALL DEPENDS ${PROJECT_SOURCE_DIR}/armageddon.txt)
+add_custom_target(data ALL DEPENDS ${PROJECT_SOURCE_DIR}/armageddon4.txt)
 
 find_package (Gnuplot REQUIRED)
 
-add_custom_command(COMMAND ${GNUPLOT_EXECUTABLE} ${PROJECT_SOURCE_DIR}/armageddon.plt
+add_custom_command(COMMAND ${GNUPLOT_EXECUTABLE} ${PROJECT_SOURCE_DIR}/armageddon4.plt
                    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-                   OUTPUT ${PROJECT_SOURCE_DIR}/armageddon.png
-                   DEPENDS ${PROJECT_SOURCE_DIR}/armageddon.plt data
-                   COMMENT "Generating plot")
+                   OUTPUT ${PROJECT_SOURCE_DIR}/armageddon4.png
+                   DEPENDS ${PROJECT_SOURCE_DIR}/armageddon4.plt data
+                   COMMENT "Generating plot for 4-body simulation")
 
-add_custom_target(plot ALL DEPENDS ${PROJECT_SOURCE_DIR}/armageddon.png)
+add_custom_target(plot ALL DEPENDS ${PROJECT_SOURCE_DIR}/armageddon4.png)
 #CMake pipeline end             
 
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 17

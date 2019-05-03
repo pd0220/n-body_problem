@@ -113,6 +113,6 @@ auto solve_RK4_adapt(State y0,T t0,T t1,T h,RHS f,Callback cb,T const& Delta0)
         y=y+(k1f+k4f+(T)2*(k2f+k3f))*(h0/(T)6);
         y_test=y+(k1f+k4f+(T)2*(k2f+k3f))*(h0/(T)6);
         t=t+h0;
-        cb(t,y,h0);
+        cb(t,y);
     }
 }
