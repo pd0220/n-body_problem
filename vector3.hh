@@ -2,6 +2,7 @@
 #include <cmath>
 #include <string>
 #include <sstream>
+#include <random>
 
 //3-dimensional vector structure
 template<typename T>
@@ -133,4 +134,41 @@ template<typename T>
 T length(vector3<T> const& v)
 {
     return std::sqrt(sq_length(v));
+}
+
+//random vector with given length (radius of circular orbit)
+//will be used to generate randomly chosen initial conditions for planets
+template<typename T>
+vector3<T> rand_vec_2D(T R)
+{
+    //random number generation
+    std::random_device rd{};
+    std::mt19937 gen(rd());
+    std::normal_distribution<T> polar((T)0,(T)2*M_PI);
+    //polar angle
+    T phi=polar(gen);
+    return R*vector3<T>{std::cos(phi),std::sin(phi),(T)0};
+}
+
+//random vector with given length (radius of circular orbit)
+//will be used to generate randomly chosen initial conditions for the asteroid
+template<typename T>
+vector3<T> rand_vec_3D(T R)
+{
+    //random number generation
+    std::random_device rd{};
+    std::mt19937 gen(rd());
+    std::normal_distribution<T> polar((T)0,(T)2*M_PI);
+    std::normal_distribution<T> azimuthal((T)0,(T)M_PI);
+    //polar angle
+    T phi=polar(gen);
+    //azi
+    T theta=azimuthal(gen);
+
+    T sin_theta=std::sin(theta);
+    T cos_theta=std::cos(theta);
+    T sin_phi=std::sin(phi);
+    T cos_phi=std::cos(phi);
+
+    return R*vector3<T>{sin_theta*cos_phi,sin_theta*sin_phi,cos_theta};
 }
