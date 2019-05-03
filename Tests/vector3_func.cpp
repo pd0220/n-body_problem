@@ -1,6 +1,6 @@
 #include "../vector3.hh"
 
-//test for length and squared length functions
+//test for length, squared length, normalize and perpendicular vector calculation functions
 int main(int,char**)
 {
     //test vector will be v=(1.0,2.0,1.5)

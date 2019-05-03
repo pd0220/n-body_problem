@@ -185,7 +185,7 @@ vector3<T> norm(vector3<T> const& v)
     return v/length(v);
 }
 
-//find a specific perpendicular unit vector for a given vector
+//find a specific (not all) perpendicular unit vector for a given vector
 template<typename T>
 vector3<T> perp_unit_vec(vector3<T> const& v)
 {
