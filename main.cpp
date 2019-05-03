@@ -2,6 +2,8 @@
 #include "num_int.hh"
 #include <chrono>
 
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
 //main function
 int main(int, char**)
 {    
@@ -30,6 +32,8 @@ int main(int, char**)
     //average distance of Sun and the inner border of the Oort cloud (m)
     const double ASTEROID_AVG=1e13;
 
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
     //initial conditions
     //distance (m)
     //velocity (m/s)
@@ -43,6 +47,8 @@ int main(int, char**)
     const vector3<double> JUPITER_V=Jupiter_vel*perp_unit_vec(JUPITER_R);
     const vector3<double> ASTEROID_R=rand_vec_3D(ASTEROID_AVG);
 
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
     //2e3 m/s sets a relatively stable orbit for the asteroid
     //random perturbation will be added for this value
     //random number generation
@@ -52,6 +58,8 @@ int main(int, char**)
     const double ASTEROID_V_perturbation=distr(gen);
     const vector3<double> ASTEROID_V=(2e3+ASTEROID_V_perturbation)*perp_unit_vec(ASTEROID_R);
     
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
     //RHS for Jupiter-Earth-Sun-asteroid
     auto armageddon4=[&](double t,state4<double> s)->state4<double>{return
     {
@@ -77,7 +85,10 @@ int main(int, char**)
 
         -G*SUN_M*(s.ASTEROID_R-s.SUN_R)/std::pow(length(s.ASTEROID_R-s.SUN_R),3)
         -G*EARTH_M*(s.ASTEROID_R-s.EARTH_R)/std::pow(length(s.ASTEROID_R-s.EARTH_R),3)
-        -G*JUPITER_M*(s.ASTEROID_R-s.JUPITER_R)/std::pow(length(s.ASTEROID_R-s.JUPITER_R),3)};};
+        -G*JUPITER_M*(s.ASTEROID_R-s.JUPITER_R)/std::pow(length(s.ASTEROID_R-s.JUPITER_R),3)
+    };};
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
     const state4<double> y04{SUN_R,SUN_V,
                     EARTH_R,EARTH_V,
@@ -88,6 +99,8 @@ int main(int, char**)
                     EARTH_R,EARTH_V,
                     ASTEROID_R,ASTEROID_V};
 
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
     //to file
     auto to_file4=[&](double t,state4<double> s)
     {
@@ -99,6 +112,7 @@ int main(int, char**)
         file<<s.ASTEROID_R<<" ";
         file<<t<<"\n";
     };
+
     auto to_file3=[&](double t,state3<double> s)
     {
         std::ofstream file;
@@ -109,15 +123,18 @@ int main(int, char**)
         file<<t<<"\n";
     };
 
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
     //integration of ODEs
     const double t0=0.;
     const double t1=3e10;
     const double h=1e3;
     const double delta0=1e-4;
 
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
     //clock0
     auto clock0=std::chrono::high_resolution_clock::now();
-
 
     //RK4 for 4 planets
     solve_RK4_adapt(y04,t0,t1,h,armageddon4,to_file4,delta0);
@@ -127,7 +144,9 @@ int main(int, char**)
 
     //"measuring" time
     double time_clock=(static_cast<std::chrono::duration<double,std::milli>>(clock1-clock0)).count();
-    std::cout<<"Overall integration time: "<<time_clock<<" ms."<<std::endl;
+    std::cout<<"Overall integration time for 4 planets: "<<time_clock<<" ms."<<std::endl;
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
     return 0;
 }

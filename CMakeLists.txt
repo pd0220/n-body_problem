@@ -9,21 +9,38 @@ if (MSVC)
 endif (MSVC)
 
 add_executable(n_body_simulation main.cpp)
-#CMake Pipeline begin
-add_executable(CMakePipeline main.cpp)
+#CMake Pipeline begin (4 planets)
+add_executable(CMakePipeline4 main.cpp)
 
-add_custom_target(data ALL DEPENDS ${PROJECT_SOURCE_DIR}/armageddon4.txt)
+add_custom_target(data4 ALL DEPENDS ${PROJECT_SOURCE_DIR}/armageddon4.txt)
 
 find_package (Gnuplot REQUIRED)
 
 add_custom_command(COMMAND ${GNUPLOT_EXECUTABLE} ${PROJECT_SOURCE_DIR}/armageddon4.plt
                    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                    OUTPUT ${PROJECT_SOURCE_DIR}/armageddon4.png
-                   DEPENDS ${PROJECT_SOURCE_DIR}/armageddon4.plt data
+                   DEPENDS ${PROJECT_SOURCE_DIR}/armageddon4.plt data4
                    COMMENT "Generating plot for 4-body simulation")
 
-add_custom_target(plot ALL DEPENDS ${PROJECT_SOURCE_DIR}/armageddon4.png)
+add_custom_target(plot4 ALL DEPENDS ${PROJECT_SOURCE_DIR}/armageddon4.png)
+#CMake pipeline end 
+
+#CMake Pipeline begin (3 planets)
+add_executable(CMakePipeline3 main.cpp)
+
+add_custom_target(data3 ALL DEPENDS ${PROJECT_SOURCE_DIR}/armageddon3.txt)
+
+find_package (Gnuplot REQUIRED)
+
+add_custom_command(COMMAND ${GNUPLOT_EXECUTABLE} ${PROJECT_SOURCE_DIR}/armageddon3.plt
+                   WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+                   OUTPUT ${PROJECT_SOURCE_DIR}/armageddon3.png
+                   DEPENDS ${PROJECT_SOURCE_DIR}/armageddon3.plt data3
+                   COMMENT "Generating plot for 3-body simulation")
+
+add_custom_target(plot3 ALL DEPENDS ${PROJECT_SOURCE_DIR}/armageddon3.png)
 #CMake pipeline end             
+
 
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 17
                                                  CXX_STANDARD_REQUIRED ON

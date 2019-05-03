@@ -1,6 +1,8 @@
 #include <fstream>
 #include <array>
 
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
 //RK4 method implementation for numerical integration
 template<typename State,typename T,typename RHS,typename Callback>
 auto solve_RK4(State y0,T t0,T t1,T h,RHS f,Callback cb)
@@ -27,6 +29,8 @@ auto solve_RK4(State y0,T t0,T t1,T h,RHS f,Callback cb)
     return y;
 }
 
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
 //Euler method implementation for numerical integration
 template<typename State,typename T,typename RHS,typename Callback>
 auto solve_Euler(State y0,T t0,T t1,T h,RHS f,Callback cb)
@@ -47,6 +51,8 @@ auto solve_Euler(State y0,T t0,T t1,T h,RHS f,Callback cb)
         cb(t,y,h);
     }
 }
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 //adaptive RK4 method implementation for numerical integration
 //via one RK4 and one RK5 step
@@ -98,6 +104,8 @@ auto solve_RK4_adapt(State y0,T t0,T t1,T h,RHS f,Callback cb,T const& Delta0)
         State k2f=f(t+h0*(T)0.5,y+(h0*(T)0.5)*k1f);
         State k3f=f(t+h0*(T)0.5,y+(h0*(T)0.5)*k2f);
         State k4f=f(t+h0,y+h0*k3f);
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
         //simple loading screen
         if(std::abs(i*t1/100-t)<h0)

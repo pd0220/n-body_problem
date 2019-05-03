@@ -1,5 +1,7 @@
 #include "vector3.hh"
 
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
 //state for 3 planets
 //positions and velocities in a 3-dimensional space (r and v vectors) with essential operators only
 //used in RK4 method
@@ -20,6 +22,8 @@ struct state3
         return *this;
     }
 };
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 //state for 4 planets
 //positions and velocities in a 3-dimensional space (r and v vectors) with essential operators only
@@ -43,6 +47,8 @@ struct state4
         return *this;
     }
 };
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 //summation (+)
 template<typename T>
@@ -74,6 +80,8 @@ state4<T> operator+(state4<T> const& s1,state4<T> const& s2)
     };
 }
 
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
 //substraction (-)
 template<typename T>
 state3<T> operator-(state3<T> const& s1,state3<T> const& s2)
@@ -103,6 +111,8 @@ state4<T> operator-(state4<T> const& s1,state4<T> const& s2)
         s1.ASTEROID_V-s2.ASTEROID_V
     };
 }
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 //multiplication by scalar (*) (from right)
 template<typename T>
@@ -134,6 +144,8 @@ state4<T> operator*(state4<T> const& s,T const& scl)
     };
 }
 
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
 //multiplication by scalar (*) (from left)
 template<typename T>
 state3<T> operator*(T const& scl,state3<T> const& s)
@@ -164,6 +176,8 @@ state4<T> operator*(T const& scl,state4<T> const& s)
     };
 }
 
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
 //division by scalar (/)
 template<typename T>
 state3<T> operator/(state3<T> const& s,T const& scl)
@@ -193,6 +207,8 @@ state4<T> operator/(state4<T> const& s,T const& scl)
         s.ASTEROID_V/scl
     };
 }
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 //normalize state vector
 template<typename T>
