@@ -82,7 +82,7 @@ int main(int, char**)
     //short run
     //RK4
     const double t0=0.;
-    const double t1=1e9;
+    const double t1=5e9;
     const double h=1e3;
     const double delta0=1e-6;
     solve_RK4_adapt(y0,t0,t1,h,armageddon,to_file_with_size,delta0);
