@@ -3,67 +3,17 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-//RK4 method implementation for numerical integration
-template<typename State,typename T,typename RHS,typename Callback>
-auto solve_RK4(State y0,T t0,T t1,T h,RHS f,Callback cb)
-{
-    //setting initial values
-    T t=t0;
-    State y=y0;
-    //RK4 steps until reaching integration boundary
-    while(t<t1)
-    {
-        if(t+h>t1)
-        {
-            h=t1-t;
-        }
-        State k1=f(t,y);
-        State k2=f(t+h*(T)0.5,y+(h*(T)0.5)*k1);
-        State k3=f(t+h*(T)0.5,y+(h*(T)0.5)*k2);
-        State k4=f(t+h,y+h*k3);
-
-        y=y+(k1+k4+(T)2*(k2+k3))*(h/(T)6);
-        t=t+h;
-        cb(t,y,h);
-    }
-    return y;
-}
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-//Euler method implementation for numerical integration
-template<typename State,typename T,typename RHS,typename Callback>
-auto solve_Euler(State y0,T t0,T t1,T h,RHS f,Callback cb)
-{
-    //setting initial values
-    T t=t0;
-    State y=y0;
-    //Euler steps until reaching integration boundary
-    while(t<t1)
-    {
-        if(t+h>t1)
-        {
-            h=t1-t;
-        }
-
-        y=y+h*f(t,y);
-        t=t+h;
-        cb(t,y,h);
-    }
-}
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
 //adaptive RK4 method implementation for numerical integration
 //via one RK4 and one RK5 step
-template<typename State,typename T,typename RHS,typename Callback>
-auto solve_RK4_adapt(State y0,T t0,T t1,T h,RHS f,Callback cb,T const& Delta0)
+template<typename State,typename T,typename RHS,typename Callback,typename AdjustStep,typename Collision>
+auto solve_RK4_adapt(State y0,T t0,T t1,T h,RHS f,Callback cb,T const& Delta0,AdjustStep as,Collision col)
 {
     //setting initial values
     T t=t0;
     State y_test=y0;
     State y=y0;
     T i=(T)0;
+    T tmp=h;
     //adaptive steps until reaching integration boundary
     while(t<t1)
     {
@@ -99,11 +49,17 @@ auto solve_RK4_adapt(State y0,T t0,T t1,T h,RHS f,Callback cb,T const& Delta0)
             h0=h*std::pow(std::abs(Delta0/Delta),0.25);
         }
 
+        if(t+h0>t1)
+        {
+            h0=t1-t;
+        }
+
         //one RK4 step with estimated stepsize
         State k1f=f(t,y);
         State k2f=f(t+h0*(T)0.5,y+(h0*(T)0.5)*k1f);
         State k3f=f(t+h0*(T)0.5,y+(h0*(T)0.5)*k2f);
         State k4f=f(t+h0,y+h0*k3f);
+
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -122,5 +78,7 @@ auto solve_RK4_adapt(State y0,T t0,T t1,T h,RHS f,Callback cb,T const& Delta0)
         y_test=y+(k1f+k4f+(T)2*(k2f+k3f))*(h0/(T)6);
         t=t+h0;
         cb(t,y);
+        as(t,y,h,tmp);
+        col(y);
     }
 }
