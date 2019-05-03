@@ -56,9 +56,9 @@ int main(int, char**)
     std::mt19937 gen(rd());
     std::normal_distribution<double> distr(-250.,250.);
     //const double ASTEROID_V_perturbation=distr(gen);
-    const double ASTEROID_V_perturbation=-1750.;
-    //const vector3<double> ASTEROID_V=(ASTEROID_V_perturbation+2e3)*perp_unit_vec(ASTEROID_R);
-    const vector3<double> ASTEROID_V{0.,0.,0.};
+    const double ASTEROID_V_perturbation=distr(gen);
+    const vector3<double> ASTEROID_V=(ASTEROID_V_perturbation+2e3)*perp_unit_vec(ASTEROID_R);
+    //const vector3<double> ASTEROID_V{0.,0.,0.};
     
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
