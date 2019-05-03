@@ -82,10 +82,10 @@ int main(int, char**)
     //short run
     //RK4
     const double t0=0.;
-    const double t1=1e10;
-    const double h=1e5;
-    const double delta_0=1e14;
-    solve_RK4_adapt(y0,t0,t1,h,armageddon,to_file_with_size,delta_0);
+    const double t1=1e11;
+    const double h=1e4;
+    const double delta0=1e-6;
+    solve_RK4_adapt(y0,t0,t1,h,armageddon,to_file_with_size,delta0);
     //solve_RK4(y0,t0,t1,h,armageddon,to_file_with_size);
 
     return 0;
