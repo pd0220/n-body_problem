@@ -54,8 +54,7 @@ int main(int, char**)
     //random number generation
     std::random_device rd{};
     std::mt19937 gen(rd());
-    std::normal_distribution<double> distr(-250.,250.);
-    //const double ASTEROID_V_perturbation=distr(gen);
+    std::normal_distribution<double> distr(-500.,500.);
     const double ASTEROID_V_perturbation=distr(gen);
     const vector3<double> ASTEROID_V=(ASTEROID_V_perturbation+2e3)*perp_unit_vec(ASTEROID_R);
     //const vector3<double> ASTEROID_V{0.,0.,0.};
@@ -154,7 +153,7 @@ int main(int, char**)
     {
         if(length(s.EARTH_R-s.ASTEROID_R)<1e7 || length(s.SUN_R-s.ASTEROID_R)<1e9)
         {
-            h=tmp/100;
+            h=tmp/10000;
         }
         else
         {
@@ -165,7 +164,7 @@ int main(int, char**)
     {
         if(length(s.EARTH_R-s.ASTEROID_R)<1e7 || length(s.JUPITER_R-s.ASTEROID_R)<1e8 || length(s.SUN_R-s.ASTEROID_R)<1e9)
         {
-            h=tmp/100.;
+            h=tmp/10000.;
         }
         else
         {
