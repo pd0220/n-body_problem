@@ -80,8 +80,7 @@ int main(int, char**)
         file<<dt<<"\n";
     };
 
-    //short run
-    //RK4
+    //integration of ODEs
     const double
     t0=0.;
     const double t1=5e9;
