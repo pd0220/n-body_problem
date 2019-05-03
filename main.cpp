@@ -143,6 +143,7 @@ int main(int, char**)
         file<<s.SUN_R<<" ";
         file<<s.EARTH_R<<" ";
         file<<s.ASTEROID_R<<" ";
+        file<<length(s.SUN_R-s.ASTEROID_R)<<" ";
         file<<t<<"\n";
     };
 
