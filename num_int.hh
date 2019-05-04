@@ -22,6 +22,8 @@ auto solve_RK4_adapt(State y0,T t0,T t1,T h,RHS f,Callback cb,T const& Delta0,Ad
             h=t1-t;
         }
 
+        as(t,y,h,tmp);
+
         //fifth order step
         State k1=f(t,y_test);
         State k2=f(t+h*(T)0.2,y_test+(T)0.2*k1);
