@@ -4,7 +4,7 @@
 #include <sstream>
 #include <random>
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 //3-dimensional vector structure
 template<typename T>
@@ -53,7 +53,7 @@ struct vector3
     }
 };
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 //output stream
 template<typename T>
@@ -63,7 +63,7 @@ std::ostream& operator<<(std::ostream& o,vector3<T> const& v)
     return o;
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 //input stream
 template<typename T>
@@ -93,7 +93,7 @@ std::istream& operator>>(std::istream& i,vector3<T> & v)
     return i;
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 //summation of vectors (+)
 template<typename T>
@@ -102,7 +102,7 @@ vector3<T> operator+(vector3<T> const& v1,vector3<T> const& v2)
     return vector3<T>{v1.x+v2.x,v1.y+v2.y,v1.z+v2.z};
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 //substraction of vectors (-)
 template<typename T>
@@ -111,7 +111,7 @@ vector3<T> operator-(vector3<T> const& v1,vector3<T> const& v2)
     return vector3<T>{v1.x-v2.x,v1.y-v2.y,v1.z-v2.z};
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 //multiplication by scalar (*) (from left)
 template<typename T>
@@ -127,7 +127,7 @@ vector3<T> operator*(vector3<T> const& v,T const& scl)
     return vector3<T>{v.x*scl,v.y*scl,v.z*scl};
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 //division by scalar (/)
 template<typename T>
@@ -136,7 +136,7 @@ vector3<T> operator/(vector3<T> const& v,T const& scl)
     return vector3<T>{v.x/scl,v.y/scl,v.z/scl};
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 //squared length of vector
 template<typename T>
@@ -152,7 +152,7 @@ T length(vector3<T> const& v)
     return std::sqrt(sq_length(v));
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 //random vector with given length (radius of circular orbit)
 //will be used to generate randomly chosen initial conditions for planets
@@ -191,7 +191,7 @@ vector3<T> rand_vec_3D(T const& R)
     return R*vector3<T>{sin_theta*cos_phi,sin_theta*sin_phi,cos_theta};
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 //normalize a vector
 template<typename T>
@@ -205,7 +205,7 @@ vector3<T> norm(vector3<T> const& v)
     return v/length(v);
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 //find a specific (not all) perpendicular unit vector for a given vector
 template<typename T>

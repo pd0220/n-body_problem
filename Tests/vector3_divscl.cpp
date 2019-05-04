@@ -1,5 +1,7 @@
 #include "../vector3.hh"
 
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
 //test for division by scalar operators (/,/=) for vector3 structure
 int main(int,char**)
 {
@@ -9,6 +11,8 @@ int main(int,char**)
     //v/scl=v_res=(2.0,4.0,3.0)
     vector3<double> v_res{2.,4.,3.};
     vector3<double> v_test=v/scl;
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
     if(std::abs(v_res.x-v_test.x)>1e5 || std::abs(v_res.y-v_test.y)>1e5 || std::abs(v_res.z-v_test.z)>1e5)
     {

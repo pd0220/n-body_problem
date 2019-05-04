@@ -1,7 +1,7 @@
 #include <fstream>
 #include <array>
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 //adaptive RK4 method implementation for numerical integration
 //via one RK4 and one RK5 step
@@ -13,7 +13,8 @@ auto solve_RK4_adapt(State y0,T t0,T t1,T h,RHS f,Callback cb,T const& Delta0,Ad
     State y_test=y0;
     State y=y0;
     T i=(T)0;
-    T tmp=h;
+    T tmp_h=h;
+    bool collision_marker=false;
     //adaptive steps until reaching integration boundary
     while(t<t1)
     {
@@ -22,7 +23,7 @@ auto solve_RK4_adapt(State y0,T t0,T t1,T h,RHS f,Callback cb,T const& Delta0,Ad
             h=t1-t;
         }
 
-        as(t,y,h,tmp);
+        //as(t,y,h,tmp_h);
 
         //fifth order step
         State k1=f(t,y_test);
@@ -63,7 +64,7 @@ auto solve_RK4_adapt(State y0,T t0,T t1,T h,RHS f,Callback cb,T const& Delta0,Ad
         State k4f=f(t+h0,y+h0*k3f);
 
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
         //simple loading screen
         if(std::abs(i*t1/100-t)<h0)
@@ -79,8 +80,11 @@ auto solve_RK4_adapt(State y0,T t0,T t1,T h,RHS f,Callback cb,T const& Delta0,Ad
         y=y+(k1f+k4f+(T)2*(k2f+k3f))*(h0/(T)6);
         y_test=y+(k1f+k4f+(T)2*(k2f+k3f))*(h0/(T)6);
         t=t+h0;
-        cb(t,y);
-        as(t,y,h,tmp);
-        col(y);
+        cb(t,y,h0);
+        collision_marker=col(y);
+        if(collision_marker)
+        {
+            break;
+        }
     }
 }

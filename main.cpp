@@ -2,7 +2,7 @@
 #include "num_int.hh"
 #include <chrono>
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 //main function
 int main(int, char**)
@@ -32,7 +32,7 @@ int main(int, char**)
     //average distance of Sun and the inner border of the Oort cloud (m)
     const double ASTEROID_AVG=1e13;
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
     //initial conditions
     //distance (m)
@@ -47,7 +47,7 @@ int main(int, char**)
     const vector3<double> JUPITER_V=Jupiter_vel*perp_unit_vec(JUPITER_R);
     const vector3<double> ASTEROID_R=rand_vec_3D(ASTEROID_AVG);
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
     //2e3 m/s sets a relatively stable orbit for the asteroid
     //random perturbation will be added for this value
@@ -55,11 +55,12 @@ int main(int, char**)
     std::random_device rd{};
     std::mt19937 gen(rd());
     std::normal_distribution<double> distr(-500.,500.);
-    const double ASTEROID_V_perturbation=distr(gen);
+    //const double ASTEROID_V_perturbation=distr(gen);
+    const double ASTEROID_V_perturbation=-500.;
     const vector3<double> ASTEROID_V=(ASTEROID_V_perturbation+2e3)*perp_unit_vec(ASTEROID_R);
     //const vector3<double> ASTEROID_V{0.,0.,0.};
     
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
     //RHS for Sun-Earth-Asteroid
     auto armageddon3=[&](double t,state3<double> s)->state3<double>{return
@@ -108,7 +109,7 @@ int main(int, char**)
         -G*JUPITER_M*(s.ASTEROID_R-s.JUPITER_R)/std::pow(length(s.ASTEROID_R-s.JUPITER_R),3)
     };};
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
     const state4<double> y04{SUN_R,SUN_V,
                     EARTH_R,EARTH_V,
@@ -120,10 +121,10 @@ int main(int, char**)
                     ASTEROID_R,ASTEROID_V};
 
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
     //to file
-    auto to_file4=[&](double t,state4<double> const& s)
+    auto to_file4=[&](double t,state4<double> const& s,double dt)
     {
         std::ofstream file;
         file.open("armageddon4.txt",std::fstream::app);
@@ -132,10 +133,11 @@ int main(int, char**)
         file<<s.JUPITER_R<<" ";
         file<<s.ASTEROID_R<<" ";
         file<<length(s.SUN_R-s.ASTEROID_R)<<" ";
+        file<<dt<<" ";
         file<<t<<"\n";
     };
 
-    auto to_file3=[&](double t,state3<double> const& s)
+    auto to_file3=[&](double t,state3<double> const& s,double dt)
     {
         std::ofstream file;
         file.open("armageddon3.txt",std::fstream::app);
@@ -143,80 +145,103 @@ int main(int, char**)
         file<<s.EARTH_R<<" ";
         file<<s.ASTEROID_R<<" ";
         file<<length(s.SUN_R-s.ASTEROID_R)<<" ";
+        file<<dt<<" ";
         file<<t<<"\n";
     };
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
     //adjusting step size for integration when planets are near to the asteroid
-    auto nearing3=[&](double t,state3<double> s,double h,double tmp)
+    auto nearing3=[&](double t,state3<double> s,double h,double tmp_h)
     {
-        if(length(s.EARTH_R-s.ASTEROID_R)<1e7 || length(s.SUN_R-s.ASTEROID_R)<1e9)
+        double lEA=length(s.EARTH_R-s.ASTEROID_R);
+        double lSA=length(s.SUN_R-s.ASTEROID_R);
+        if(lEA<1e8 || lSA<1e10)
         {
-            h=tmp/10000;
+            h=tmp_h/10000;
+            std::cout<<"Step adjustments had to be made due to nearing objects."<<std::endl;
         }
         else
         {
-            h=tmp;
-        }   
+            if(h<tmp_h)
+            {
+                std::cout<<"Step resized to its original size."<<std::endl;
+            }
+            h=tmp_h;
+        }
     };
-    auto nearing4=[&](double t,state4<double> s,double h,double tmp)
+    auto nearing4=[&](double t,state4<double> s,double h,double tmp_h)
     {
-        if(length(s.EARTH_R-s.ASTEROID_R)<1e7 || length(s.JUPITER_R-s.ASTEROID_R)<1e8 || length(s.SUN_R-s.ASTEROID_R)<1e9)
+        double lEA=length(s.EARTH_R-s.ASTEROID_R);
+        double lSA=length(s.SUN_R-s.ASTEROID_R);
+        double lJA=length(s.JUPITER_R-s.ASTEROID_R);
+        if(lEA<1e8 || lJA<1e9 || lSA<1e10)
         {
-            h=tmp/10000.;
+            h=tmp_h/10000.;
+            std::cout<<"Step adjustments had to be made due to nearing objects."<<std::endl;
         }
         else
         {
-            h=tmp;
+            if(h<tmp_h)
+            {
+                std::cout<<"Step resized to its original size."<<std::endl;
+            }
+            h=tmp_h;
         }
     };
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-    //checking  for collision
+    //checking  for collisions
     auto col3=[&](state3<double> s)
     {
-        if(length(s.EARTH_R-s.ASTEROID_R)<6e6)
+        double lEA=length(s.EARTH_R-s.ASTEROID_R);
+        double lSA=length(s.SUN_R-s.ASTEROID_R);
+        if(lEA<6e6)
         {
             std::cout<<"Collision will happen with the Earth.\nCall Bruce Willis ASAP.\nEnd of simulation."<<std::endl;
-            std::exit(1);
+            return true;
         }
-        if(length(s.SUN_R-s.ASTEROID_R)<7e8)
+        if(lSA<7e8)
         {
             std::cout<<"Collision will happen with the Sun.\nGoodbye Mr. Asteroid.\nEnd of simulation."<<std::endl;
-            std::exit(-1);
+            return true;
         }
+        return false;
     };
     auto col4=[&](state4<double> s)
     {
-        if(length(s.EARTH_R-s.ASTEROID_R)<6e6)
+        double lEA=length(s.EARTH_R-s.ASTEROID_R);
+        double lSA=length(s.SUN_R-s.ASTEROID_R);
+        double lJA=length(s.JUPITER_R-s.ASTEROID_R);
+        if(lEA<6e6)
         {
             std::cout<<"Collision will happen with the Earth.\nCall Bruce Willis ASAP.\nEnd of simulation."<<std::endl;
-            std::exit(1);
+            return true;
         }
-        if(length(s.JUPITER_R-s.ASTEROID_R)<7e7)
+        if(lJA<7e7)
         {
             std::cout<<"Collision will happen with Jupiter.\nThank you bro.\nEnd of simulation."<<std::endl;
-            std::exit(1);
+            return true;
         }
-        if(length(s.SUN_R-s.ASTEROID_R)<7e8)
+        if(lSA<7e8)
         {
             std::cout<<"Collision will happen with the Sun.\nGoodbye Mr. Asteroid.\nEnd of simulation."<<std::endl;
-            std::exit(-1);
+            return true;
         }
+        return false;
     };
 
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
     //integration of ODEs
     const double t0=0.;
-    const double t1=2e10;
+    const double t1=1e10;
     const double h=1e3;
-    const double delta0=1e-3;
+    const double delta0=1e-7;
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
     //clock0
     auto clock0=std::chrono::high_resolution_clock::now();
@@ -231,7 +256,7 @@ int main(int, char**)
     double time_clock4=(static_cast<std::chrono::duration<double,std::milli>>(clock1-clock0)).count();
     std::cout<<"Overall integration time for 4 planets: "<<time_clock4<<" ms."<<std::endl;
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
     //clock2
     auto clock2=std::chrono::high_resolution_clock::now();

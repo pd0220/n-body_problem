@@ -1,5 +1,7 @@
 #include "../vector3.hh"
 
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
 //test for summation operators (+,+=) for vector3 structure
 int main(int,char**)
 {
@@ -9,6 +11,8 @@ int main(int,char**)
     //v1+v2=v3=(2.5,4.0,2.5)
     vector3<double> v3{2.5,4.,2.5};
     vector3<double> v_test=v1+v2;
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
     if(std::abs(v3.x-v_test.x)>1e5 || std::abs(v3.y-v_test.y)>1e5 || std::abs(v3.z-v_test.z)>1e5)
     {

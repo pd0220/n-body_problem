@@ -1,5 +1,7 @@
 #include "../vector3.hh"
 
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
 //test for multiplication by scalar operators (*,*=) for vector3 structure
 int main(int,char**)
 {
@@ -10,6 +12,8 @@ int main(int,char**)
     vector3<double> v_res{2.5,5.,3.75};
     vector3<double> v_test_right=v*scl;
     vector3<double> v_test_left=scl*v;
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
     if(std::abs(v_res.x-v_test_right.x)>1e5 || std::abs(v_res.y-v_test_right.y)>1e5 || std::abs(v_res.z-v_test_right.z)>1e5)
     {

@@ -1,5 +1,7 @@
 #include "../vector3.hh"
 
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
 //test for length, squared length, normalize and perpendicular vector calculation functions
 int main(int,char**)
 {
@@ -11,6 +13,8 @@ int main(int,char**)
     //its squared length is 7.24999
     double l=2.69258;
     double sq_l=7.24998;
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
     if(std::abs(l-length(v))>1e5)
     {
