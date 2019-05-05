@@ -13,7 +13,6 @@ auto solve_RK4_adapt(State y0,T t0,T t1,T h,RHS f,Callback cb,T const& Delta0,Co
     State y_test=y0;
     State y=y0;
     T i=(T)0;
-    T tmp_h=h;
     bool collision_marker=false;
     //adaptive steps until reaching integration boundary
     while(t<t1)
@@ -25,18 +24,19 @@ auto solve_RK4_adapt(State y0,T t0,T t1,T h,RHS f,Callback cb,T const& Delta0,Co
 
         //fifth order step
         State k1=f(t,y_test);
-        State k2=f(t+h*(T)0.2,y_test+(T)0.2*k1);
-        State k3=f(t+h*(T)0.3,y_test+(T)0.075*k1+(T)0.225*k2);
-        State k4=f(t+h*(T)0.6,y_test+(T)0.3*k1-(T)0.9*k2+(T)1.2*k3);
-        State k5=f(t+h,y_test-(T)11/54*k1+(T)2.5*k2-(T)70/27*k3+(T)35/27*k4);
-        State k6=f(t+h*(T)0.875,y_test+(T)1631/55296*k1+(T)175/512*k2+(T)575/13824*k3+(T)44275/110592*k4+(T)253/4096*k5);
+        State k2=f(t+h*(T)1/5,y_test+(T)1/5*k1);
+        State k3=f(t+h*(T)3/10,y_test+(T)3/40*k1+(T)9/40*k2);
+        State k4=f(t+h*(T)3/5,y_test+(T)3/10*k1-(T)9/10*k2+(T)6/5*k3);
+        State k5=f(t+h,y_test-(T)11/54*k1+(T)5/2*k2-(T)70/27*k3+(T)35/27*k4);
+        State k6=f(t+h*(T)7/8,y_test+(T)1631/55296*k1+(T)175/512*k2+(T)575/13824*k3+(T)44275/110592*k4+(T)253/4096*k5);
 
         //error estimate
         State Delta_state=((T)37/378-(T)2825/27648)*k1+
                           ((T)250/621-(T)18575/48384)*k3+
                           ((T)125/594-(T)13525/55296)*k4+
                           ((T)-277/14336)*k5+
-                          ((T)512/1771-(T)0.25)*k6;
+                          ((T)512/1771-(T)1/4)*k6;
+                          
         T Delta=norm(Delta_state);
 
         //determine what stepsize to be used
@@ -55,12 +55,13 @@ auto solve_RK4_adapt(State y0,T t0,T t1,T h,RHS f,Callback cb,T const& Delta0,Co
             h0=t1-t;
         }
 
-        //one RK4 step with estimated stepsize
+        //one RK5 step with estimated stepsize
         State k1f=f(t,y);
-        State k2f=f(t+h0*(T)0.5,y+(h0*(T)0.5)*k1f);
-        State k3f=f(t+h0*(T)0.5,y+(h0*(T)0.5)*k2f);
-        State k4f=f(t+h0,y+h0*k3f);
-
+        State k2f=f(t+h0*(T)1/5,y+(T)1/5*k1f);
+        State k3f=f(t+h0*(T)3/10,y+(T)3/40*k1f+(T)9/40*k2f);
+        State k4f=f(t+h0*(T)3/5,y+(T)3/10*k1f-(T)9/10*k2f+(T)6/5*k3f);
+        State k5f=f(t+h0,y-(T)11/54*k1f+(T)5/2*k2f-(T)70/27*k3f+(T)35/27*k4f);
+        State k6f=f(t+h0*(T)7/8,y+(T)1631/55296*k1f+(T)175/512*k2f+(T)575/13824*k3f+(T)44275/110592*k4f+(T)253/4096*k5f);
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -75,8 +76,8 @@ auto solve_RK4_adapt(State y0,T t0,T t1,T h,RHS f,Callback cb,T const& Delta0,Co
             }
         }
 
-        y=y+(k1f+k4f+(T)2*(k2f+k3f))*(h0/(T)6);
-        y_test=y+(k1f+k4f+(T)2*(k2f+k3f))*(h0/(T)6);
+        y=y+h0*((T)37/378*k1f+(T)250/621*k3f+(T)125/594*k4f+(T)512/1771*k6f);
+        y_test=y;
         t=t+h0;
         cb(t,y,h0);
         collision_marker=col(y);

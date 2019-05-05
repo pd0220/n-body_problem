@@ -61,51 +61,43 @@ int main(int, char**)
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
     //RHS for Sun-Earth-Asteroid
-    auto armageddon3=[&](double t,state3<double> s)->state3<double>{return
+    auto armageddon3=[&](double t,state3<double> s)->state3<double>
     {
-        s.SUN_V,
-
-        -G*EARTH_M*(s.SUN_R-s.EARTH_R)/std::pow(length(s.SUN_R-s.EARTH_R),3)
-        -G*ASTEROID_M*(s.SUN_R-s.ASTEROID_R)/std::pow(length(s.SUN_R-s.ASTEROID_R),3),
-
-        s.EARTH_V,
-
-        -G*SUN_M*(s.EARTH_R-s.SUN_R)/std::pow(length(s.EARTH_R-s.SUN_R),3)
-        -G*ASTEROID_M*(s.EARTH_R-s.ASTEROID_R)/std::pow(length(s.EARTH_R-s.ASTEROID_R),3),
-
-        s.ASTEROID_V,
-
-        -G*SUN_M*(s.ASTEROID_R-s.SUN_R)/std::pow(length(s.ASTEROID_R-s.SUN_R),3)
-        -G*EARTH_M*(s.ASTEROID_R-s.EARTH_R)/std::pow(length(s.ASTEROID_R-s.EARTH_R),3)
-    };}; 
+        double SunToEarth=cube_length_diff(s.SUN_R,s.EARTH_R);
+        double SunToAsteroid=cube_length_diff(s.SUN_R,s.ASTEROID_R);
+        double EarthToAsteroid=cube_length_diff(s.EARTH_R,s.ASTEROID_R);
+        return
+        {
+            s.SUN_V,
+            -G*(EARTH_M*(s.SUN_R-s.EARTH_R)/SunToEarth+ASTEROID_M*(s.SUN_R-s.ASTEROID_R)/SunToAsteroid),
+            s.EARTH_V,
+            -G*(SUN_M*(s.EARTH_R-s.SUN_R)/SunToEarth+ASTEROID_M*(s.EARTH_R-s.ASTEROID_R)/EarthToAsteroid),
+            s.ASTEROID_V,
+            -G*(SUN_M*(s.ASTEROID_R-s.SUN_R)/SunToAsteroid+EARTH_M*(s.ASTEROID_R-s.EARTH_R)/EarthToAsteroid)
+        };
+    };
 
     //RHS for Sun-Earth-Jupiter-asteroid
-    auto armageddon4=[&](double t,state4<double> s)->state4<double>{return
+    auto armageddon4=[&](double t,state4<double> s)->state4<double>
     {
-        s.SUN_V,
-
-        -G*EARTH_M*(s.SUN_R-s.EARTH_R)/std::pow(length(s.SUN_R-s.EARTH_R),3)
-        -G*JUPITER_M*(s.SUN_R-s.JUPITER_R)/std::pow(length(s.SUN_R-s.JUPITER_R),3)
-        -G*ASTEROID_M*(s.SUN_R-s.ASTEROID_R)/std::pow(length(s.SUN_R-s.ASTEROID_R),3),
-
-        s.EARTH_V,
-
-        -G*SUN_M*(s.EARTH_R-s.SUN_R)/std::pow(length(s.EARTH_R-s.SUN_R),3)
-        -G*JUPITER_M*(s.EARTH_R-s.JUPITER_R)/std::pow(length(s.EARTH_R-s.JUPITER_R),3)
-        -G*ASTEROID_M*(s.EARTH_R-s.ASTEROID_R)/std::pow(length(s.EARTH_R-s.ASTEROID_R),3),
-
-        s.JUPITER_V,
-
-        -G*SUN_M*(s.JUPITER_R-s.SUN_R)/std::pow(length(s.JUPITER_R-s.SUN_R),3)
-        -G*EARTH_M*(s.JUPITER_R-s.EARTH_R)/std::pow(length(s.JUPITER_R-s.EARTH_R),3)
-        -G*ASTEROID_M*(s.JUPITER_R-s.ASTEROID_R)/std::pow(length(s.JUPITER_R-s.ASTEROID_R),3),
-
-        s.ASTEROID_V,
-
-        -G*SUN_M*(s.ASTEROID_R-s.SUN_R)/std::pow(length(s.ASTEROID_R-s.SUN_R),3)
-        -G*EARTH_M*(s.ASTEROID_R-s.EARTH_R)/std::pow(length(s.ASTEROID_R-s.EARTH_R),3)
-        -G*JUPITER_M*(s.ASTEROID_R-s.JUPITER_R)/std::pow(length(s.ASTEROID_R-s.JUPITER_R),3)
-    };};
+        double SunToEarth=cube_length_diff(s.SUN_R,s.EARTH_R);
+        double SunToAsteroid=cube_length_diff(s.SUN_R,s.ASTEROID_R);
+        double EarthToAsteroid=cube_length_diff(s.EARTH_R,s.ASTEROID_R);
+        double SunToJupiter=cube_length_diff(s.JUPITER_R,s.SUN_R);
+        double JupiterToEarth=cube_length_diff(s.JUPITER_R,s.EARTH_R);
+        double JupiterToAsteroid=cube_length_diff(s.JUPITER_R,s.ASTEROID_R);
+        return
+        {
+            s.SUN_V,
+            -G*(EARTH_M*(s.SUN_R-s.EARTH_R)/SunToEarth+JUPITER_M*(s.SUN_R-s.JUPITER_R)/SunToJupiter+ASTEROID_M*(s.SUN_R-s.ASTEROID_R)/SunToAsteroid),
+            s.EARTH_V,
+            -G*(SUN_M*(s.EARTH_R-s.SUN_R)/SunToEarth+JUPITER_M*(s.EARTH_R-s.JUPITER_R)/JupiterToEarth+ASTEROID_M*(s.EARTH_R-s.ASTEROID_R)/EarthToAsteroid),
+            s.JUPITER_V,
+            -G*(SUN_M*(s.JUPITER_R-s.SUN_R)/SunToJupiter+EARTH_M*(s.JUPITER_R-s.EARTH_R)/JupiterToEarth+ASTEROID_M*(s.JUPITER_R-s.ASTEROID_R)/JupiterToAsteroid),
+            s.ASTEROID_V,
+            -G*(SUN_M*(s.ASTEROID_R-s.SUN_R)/SunToAsteroid+EARTH_M*(s.ASTEROID_R-s.EARTH_R)/EarthToAsteroid+JUPITER_M*(s.ASTEROID_R-s.JUPITER_R)/JupiterToAsteroid)
+        };
+    };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -130,7 +122,6 @@ int main(int, char**)
         file<<s.EARTH_R<<" ";
         file<<s.JUPITER_R<<" ";
         file<<s.ASTEROID_R<<" ";
-        //file<<length(s.SUN_R-s.ASTEROID_R)<<" ";
         file<<dt<<" ";
         file<<t<<"\n";
     };
@@ -142,7 +133,6 @@ int main(int, char**)
         file<<s.SUN_R<<" ";
         file<<s.EARTH_R<<" ";
         file<<s.ASTEROID_R<<" ";
-        //file<<length(s.SUN_R-s.ASTEROID_R)<<" ";
         file<<dt<<" ";
         file<<t<<"\n";
     };
@@ -194,9 +184,9 @@ int main(int, char**)
 
     //integration of ODEs
     const double t0=0.;
-    const double t1=1e9;
-    const double h=1e3;
-    const double delta0=1e-6;
+    const double t1=1e10;
+    const double h=1e2;
+    const double delta0=1e-2;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
