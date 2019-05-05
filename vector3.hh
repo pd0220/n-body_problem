@@ -6,6 +6,12 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
+//helper function for third power
+template<typename T>
+auto cube=[](T x){return x*x*x;};
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
 //3-dimensional vector structure
 template<typename T>
 struct vector3
@@ -207,10 +213,36 @@ vector3<T> norm(vector3<T> const& v)
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-//find a specific (not all) perpendicular unit vector for a given vector
+//cross product of two vectors
+template<typename T>
+vector3<T> cross_prod(vector3<T> const& v1,vector3<T> const& v2)
+{
+    return vector3<T>{v1.y*v2.z-v1.z*v2.y,v1.z*v2.x-v1.x*v2.z,v1.x*v2.y-v1.y*v2.x};
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+//find a specific or random (not all) perpendicular unit vector for a given vector
 template<typename T>
 vector3<T> perp_unit_vec(vector3<T> const& v)
 {
-    vector3<T> res{v.y,-v.x,v.z};
-    return norm(res);
+    if(v.z==0.)
+    {
+        vector3<T> res{v.y,-v.x,v.z};
+        return norm(res);        
+    }
+    else
+    {
+        vector3<T> res=cross_prod(v,rand_vec_3D((T)1));
+        return norm(res);
+    }
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+//third power of length of difference vector
+template<typename T>
+T cube_length_diff(vector3<T> const& v1,vector3<T> const& v2)
+{
+    return cube<T>(length(v1-v2));
 }

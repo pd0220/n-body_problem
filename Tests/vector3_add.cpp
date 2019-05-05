@@ -14,7 +14,7 @@ int main(int,char**)
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-    if(std::abs(v3.x-v_test.x)>1e5 || std::abs(v3.y-v_test.y)>1e5 || std::abs(v3.z-v_test.z)>1e5)
+    if(std::abs(v3.x-v_test.x)>1e-4 || std::abs(v3.y-v_test.y)>1e-4 || std::abs(v3.z-v_test.z)>1e-4)
     {
         std::cout<<"ERROR in summation operator for vector3."<<std::endl;
         std::exit(-1);
@@ -22,7 +22,7 @@ int main(int,char**)
 
     v1+=v2;
 
-    if(std::abs(v3.x-v1.x)>1e5 || std::abs(v3.y-v1.y)>1e5 || std::abs(v3.z-v1.z)>1e5)
+    if(std::abs(v3.x-v1.x)>1e-4 || std::abs(v3.y-v1.y)>1e-4 || std::abs(v3.z-v1.z)>1e-4)
     {
         std::cout<<"ERROR in summation assignment operator for vector3."<<std::endl;
         std::exit(-1);

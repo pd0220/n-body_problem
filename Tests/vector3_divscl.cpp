@@ -14,7 +14,7 @@ int main(int,char**)
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-    if(std::abs(v_res.x-v_test.x)>1e5 || std::abs(v_res.y-v_test.y)>1e5 || std::abs(v_res.z-v_test.z)>1e5)
+    if(std::abs(v_res.x-v_test.x)>1e-4 || std::abs(v_res.y-v_test.y)>1e-4 || std::abs(v_res.z-v_test.z)>1e-4)
     {
         std::cout<<"ERROR in division by scalar operator for vector3."<<std::endl;
         std::exit(-1);
@@ -22,7 +22,7 @@ int main(int,char**)
 
     v/=scl;
 
-    if(std::abs(v_res.x-v.x)>1e5 || std::abs(v_res.y-v.y)>1e5 || std::abs(v_res.z-v.z)>1e5)
+    if(std::abs(v_res.x-v.x)>1e-4 || std::abs(v_res.y-v.y)>1e-4 || std::abs(v_res.z-v.z)>1e-4)
     {
         std::cout<<"ERROR in division by scalar assignment operator for vector3."<<std::endl;
         std::exit(-1);

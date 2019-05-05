@@ -5,8 +5,8 @@
 
 //adaptive RK4 method implementation for numerical integration
 //via one RK4 and one RK5 step
-template<typename State,typename T,typename RHS,typename Callback,typename AdjustStep,typename Collision>
-auto solve_RK4_adapt(State y0,T t0,T t1,T h,RHS f,Callback cb,T const& Delta0,AdjustStep as,Collision col)
+template<typename State,typename T,typename RHS,typename Callback,typename Collision>
+auto solve_RK4_adapt(State y0,T t0,T t1,T h,RHS f,Callback cb,T const& Delta0,Collision col)
 {
     //setting initial values
     T t=t0;
@@ -22,8 +22,6 @@ auto solve_RK4_adapt(State y0,T t0,T t1,T h,RHS f,Callback cb,T const& Delta0,Ad
         {
             h=t1-t;
         }
-
-        //as(t,y,h,tmp_h);
 
         //fifth order step
         State k1=f(t,y_test);

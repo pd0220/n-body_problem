@@ -7,7 +7,7 @@
 //main function
 int main(int, char**)
 {    
-    //parameters
+    //physical parameters
     //gravitational constant (m^3*kg^-1*s*-2)
     const double G=6.6741e-11;
 
@@ -55,10 +55,8 @@ int main(int, char**)
     std::random_device rd{};
     std::mt19937 gen(rd());
     std::normal_distribution<double> distr(-500.,500.);
-    //const double ASTEROID_V_perturbation=distr(gen);
-    const double ASTEROID_V_perturbation=-500.;
+    const double ASTEROID_V_perturbation=distr(gen);
     const vector3<double> ASTEROID_V=(ASTEROID_V_perturbation+2e3)*perp_unit_vec(ASTEROID_R);
-    //const vector3<double> ASTEROID_V{0.,0.,0.};
     
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -132,7 +130,7 @@ int main(int, char**)
         file<<s.EARTH_R<<" ";
         file<<s.JUPITER_R<<" ";
         file<<s.ASTEROID_R<<" ";
-        file<<length(s.SUN_R-s.ASTEROID_R)<<" ";
+        //file<<length(s.SUN_R-s.ASTEROID_R)<<" ";
         file<<dt<<" ";
         file<<t<<"\n";
     };
@@ -144,52 +142,11 @@ int main(int, char**)
         file<<s.SUN_R<<" ";
         file<<s.EARTH_R<<" ";
         file<<s.ASTEROID_R<<" ";
-        file<<length(s.SUN_R-s.ASTEROID_R)<<" ";
+        //file<<length(s.SUN_R-s.ASTEROID_R)<<" ";
         file<<dt<<" ";
         file<<t<<"\n";
     };
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-    //adjusting step size for integration when planets are near to the asteroid
-    auto nearing3=[&](double t,state3<double> s,double h,double tmp_h)
-    {
-        double lEA=length(s.EARTH_R-s.ASTEROID_R);
-        double lSA=length(s.SUN_R-s.ASTEROID_R);
-        if(lEA<1e8 || lSA<1e10)
-        {
-            h=tmp_h/10000;
-            std::cout<<"Step adjustments had to be made due to nearing objects."<<std::endl;
-        }
-        else
-        {
-            if(h<tmp_h)
-            {
-                std::cout<<"Step resized to its original size."<<std::endl;
-            }
-            h=tmp_h;
-        }
-    };
-    auto nearing4=[&](double t,state4<double> s,double h,double tmp_h)
-    {
-        double lEA=length(s.EARTH_R-s.ASTEROID_R);
-        double lSA=length(s.SUN_R-s.ASTEROID_R);
-        double lJA=length(s.JUPITER_R-s.ASTEROID_R);
-        if(lEA<1e8 || lJA<1e9 || lSA<1e10)
-        {
-            h=tmp_h/10000.;
-            std::cout<<"Step adjustments had to be made due to nearing objects."<<std::endl;
-        }
-        else
-        {
-            if(h<tmp_h)
-            {
-                std::cout<<"Step resized to its original size."<<std::endl;
-            }
-            h=tmp_h;
-        }
-    };
-
+    
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
     //checking  for collisions
@@ -237,9 +194,9 @@ int main(int, char**)
 
     //integration of ODEs
     const double t0=0.;
-    const double t1=1e10;
+    const double t1=1e9;
     const double h=1e3;
-    const double delta0=1e-8;
+    const double delta0=1e-6;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -247,7 +204,7 @@ int main(int, char**)
     auto clock0=std::chrono::high_resolution_clock::now();
 
     //RK4 for 4 planets
-    solve_RK4_adapt(y04,t0,t1,h,armageddon4,to_file4,delta0,nearing4,col4);
+    solve_RK4_adapt(y04,t0,t1,h,armageddon4,to_file4,delta0,col4);
 
     //clock1
     auto clock1=std::chrono::high_resolution_clock::now();
@@ -262,7 +219,7 @@ int main(int, char**)
     auto clock2=std::chrono::high_resolution_clock::now();
 
     //RK4 for 3 planets
-    solve_RK4_adapt(y03,t0,t1,h,armageddon3,to_file3,delta0,nearing3,col3);
+    solve_RK4_adapt(y03,t0,t1,h,armageddon3,to_file3,delta0,col3);
 
     //clock3
     auto clock3=std::chrono::high_resolution_clock::now();
