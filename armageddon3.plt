@@ -1,4 +1,4 @@
-set term png size 1280,720
+set term png size 1920,1080
 set out "armageddon3.png"
 
 set title "Numerical simulation for 3 high mass objects\nwith adaptive fourth-order Runge-Kutta method." font ",20"
