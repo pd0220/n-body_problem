@@ -7,6 +7,7 @@
 //main function
 int main(int, char**)
 {
+
     //physical parameters
     //gravitational constant (m^3*kg^-1*s*-2)
     const double G=6.6741e-11;
@@ -57,6 +58,8 @@ int main(int, char**)
     std::mt19937 gen(rd());
     std::normal_distribution<double> distr(-1000.,-750.);
     const double ASTEROID_V_perturbation=distr(gen);
+
+    //const double ASTEROID_V_perturbation=-1500;
     const vector3<double> ASTEROID_V=(ASTEROID_V_perturbation+2e3)*perp_unit_vec(ASTEROID_R);
 
     //const vector3<double> ASTEROID_V{0.,0.,0.};
@@ -148,13 +151,13 @@ int main(int, char**)
         double lEA=length(s.EARTH_R-s.ASTEROID_R);
         double lSA=length(s.SUN_R-s.ASTEROID_R);
         //Earth-Moon
-        if(lEA<10*3.844e8)
+        if(lEA<100*3.844e8)
         {
             std::cout<<"Collision will happen with the Earth.\nCall Bruce Willis ASAP.\nEnd of simulation."<<std::endl;
             return true;
         }
         //Radius of Sun
-        if(lSA<10*6.96342e8)
+        if(lSA<100*6.96342e8)
         {
             std::cout<<"Collision will happen with the Sun.\nGoodbye Mr. Asteroid.\nEnd of simulation."<<std::endl;
             return true;
@@ -173,19 +176,19 @@ int main(int, char**)
         double lSA=length(s.SUN_R-s.ASTEROID_R);
         double lJA=length(s.JUPITER_R-s.ASTEROID_R);
         //Earth-Moon
-        if(lEA<10*3.844e8)
+        if(lEA<100*3.844e8)
         {
             std::cout<<"Collision will happen with the Earth.\nCall Bruce Willis ASAP.\nEnd of simulation."<<std::endl;
             return true;
         }
         //Jupiter-Callisto
-        if(lJA<10*1.88e9)
+        if(lJA<100*1.88e9)
         {
             std::cout<<"Collision will happen with Jupiter.\nThank you bro.\nEnd of simulation."<<std::endl;
             return true;
         }
         //Radius of Sun        
-        if(lSA<10*6.96342e8)
+        if(lSA<100*6.96342e8)
         {
             std::cout<<"Collision will happen with the Sun.\nGoodbye Mr. Asteroid.\nEnd of simulation."<<std::endl;
             return true;
@@ -196,6 +199,7 @@ int main(int, char**)
             std::cout<<"Asteroid left the system.\nWe are safe... until the next simulation."<<std::endl;
             return true;
         }
+
         return false;
     };
 
@@ -204,9 +208,9 @@ int main(int, char**)
 
     //integration of ODEs
     const double t0=0.;
-    const double t1=2e9;
-    const double h=1e2;
-    const double delta0=1e-6;
+    const double t1=5e9;
+    const double h=1e3;
+    const double delta0=1e-8;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -237,6 +241,8 @@ int main(int, char**)
     //"measuring" time
     double time_clock3=(static_cast<std::chrono::duration<double,std::milli>>(clock3-clock2)).count();
     std::cout<<"Overall integration time for 3 planets: "<<time_clock3<<" ms."<<std::endl;
+
+
 
     return 0;
 }
