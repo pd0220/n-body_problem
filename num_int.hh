@@ -50,7 +50,7 @@ auto solve_RK4_adapt(State y0,T t0,T t1,T h,RHS f,Callback cb,T const& Delta0,Co
         t=t+h;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......        
-
+    
         //simple loading screen
         if(std::abs(i*t1/100-t)<h)
         {
@@ -61,7 +61,7 @@ auto solve_RK4_adapt(State y0,T t0,T t1,T h,RHS f,Callback cb,T const& Delta0,Co
                 std::cout<<"ERROR occured in loading screen."<<std::endl;
             }
         }
-
+    
         //inner check functions
         path=dist(y,path);
         cb(t,y,h);

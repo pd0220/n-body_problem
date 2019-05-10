@@ -216,9 +216,9 @@ int main(int, char**)
 
     //integration of ODEs
     const double t0=0.;
-    const double t1=1e9;
+    const double t1=2e9;
     const double h=1e4;
-    const double delta0=1e-9;
+    const double delta0=1e-8;
     const int N=1000;
     int trg=0;
 
