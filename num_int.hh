@@ -2,8 +2,8 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-//adaptive RK4 method implementation for numerical integration
-//via one RK4 and one RK5 step
+//adaptive Cash-Karp method implementation for numerical integration
+//via one RK5 and one RK4 step
 template<typename State,typename T,typename RHS,typename Callback,typename Collision>
 auto solve_RK4_adapt(State y0,T t0,T t1,T h,RHS f,Callback cb,T const& Delta0,Collision col)
 {
