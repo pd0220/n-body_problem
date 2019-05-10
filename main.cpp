@@ -32,7 +32,7 @@ int main(int, char**)
     const double JUPITER_AVG=7.785e11;
 
     //average distance of Sun and the asteroid (m)
-    const double ASTEROID_AVG=1e12;
+    const double ASTEROID_AVG=2e12;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -40,26 +40,7 @@ int main(int, char**)
     //distance (m)
     //velocity (m/s)
     const double Earth_vel=2.978e4;
-    const double Jupiter_vel=1.3071e4;
-    
-    const vector3<double> SUN_R,SUN_V;
-    const vector3<double> EARTH_R=rand_vec_2D(EARTH_AVG);
-    const vector3<double> EARTH_V=Earth_vel*perp_unit_vec(EARTH_R);
-    const vector3<double> JUPITER_R=rand_vec_2D(JUPITER_AVG);
-    const vector3<double> JUPITER_V=Jupiter_vel*perp_unit_vec(JUPITER_R);
-    const vector3<double> ASTEROID_R=rand_vec_3D(ASTEROID_AVG);
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-    //5e3 m/s sets a relatively stable orbit for the asteroid
-    //random perturbation will be added for this value
-
-    //random number generation
-    std::random_device rd{};
-    std::mt19937 gen(rd());
-    std::normal_distribution<double> distr(-1500.,-2500.);
-    const double ASTEROID_V_perturbation=distr(gen);
-    const vector3<double> ASTEROID_V=(ASTEROID_V_perturbation+5e3)*perp_unit_vec(ASTEROID_R);
+    const double Jupiter_vel=1.3071e4; 
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -104,19 +85,21 @@ int main(int, char**)
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-    const state4<double> y04{SUN_R,SUN_V,
-                    EARTH_R,EARTH_V,
-                    JUPITER_R,JUPITER_V,
-                    ASTEROID_R,ASTEROID_V};
-
-    const state3<double> y03{SUN_R,SUN_V,
-                    EARTH_R,EARTH_V,
-                    ASTEROID_R,ASTEROID_V};
-
+    
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
     //to file
+    auto to_file3=[&](double t,state3<double> const& s,double dt)
+    {
+        std::ofstream file;
+        file.open("armageddon3.txt",std::fstream::app);
+        file<<s.SUN_R<<" ";
+        file<<s.EARTH_R<<" ";
+        file<<s.ASTEROID_R<<" ";
+        file<<dt<<" ";
+        file<<t<<"\n";
+    };
     auto to_file4=[&](double t,state4<double> const& s,double dt)
     {
         std::ofstream file;
@@ -129,36 +112,6 @@ int main(int, char**)
         file<<t<<"\n";
     };
 
-    auto to_file3=[&](double t,state3<double> const& s,double dt)
-    {
-        std::ofstream file;
-        file.open("armageddon3.txt",std::fstream::app);
-        file<<s.SUN_R<<" ";
-        file<<s.EARTH_R<<" ";
-        file<<s.ASTEROID_R<<" ";
-        file<<dt<<" ";
-        file<<t<<"\n";
-    };
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-/*
-    //distance statistics
-    auto dist4=[&](double t,state4<double> const& s,double)
-    {
-        std::ofstream file;
-        file.open("dist4.txt",std::fstream::app);
-        file<<t<<" ";
-        file<<length(s.ASTEROID_R-s.EARTH_R)<<"\n";
-    };
-
-    auto dist3=[&](double t,state3<double> const& s,double)
-    {
-        std::ofstream file;
-        file.open("dist3.txt",std::fstream::app);
-        file<<t<<" ";
-        file<<length(s.ASTEROID_R-s.EARTH_R)<<"\n";
-    };
-*/
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
     //checking  for collisions
@@ -219,51 +172,190 @@ int main(int, char**)
         return false;
     };
 
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+    //do nothing
+    auto nothing3=[&](double,state3<double>,double)
+    {
+
+    };
+    auto nothing4=[&](double,state4<double>,double)
+    {
+
+    };
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+    //minimum distance statistics
+    auto min3=[&](state3<double> s,double path)
+    {
+        double r=length(s.EARTH_R-s.ASTEROID_R);
+        if(r<=path)
+        {
+            return r;
+        }
+        else
+        {
+            return path;
+        }    
+    };
+    auto min4=[&](state4<double> s,double path)
+    {
+        double r=length(s.EARTH_R-s.ASTEROID_R);
+        if(r<=path)
+        {
+            return r;
+        }
+        else
+        {
+            return path;
+        }        
+    };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
     //integration of ODEs
     const double t0=0.;
     const double t1=1e9;
-    const double h=1e3;
-    const double delta0=1e-8;
+    const double h=1e4;
+    const double delta0=1e-9;
+    const int N=1;
+    int trg=0;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-    std::remove("armageddon4.txt");
+    //reloading writable files
     std::remove("armageddon3.txt");
-    std::remove("armageddon4.png");
+    std::remove("armageddon4.txt");
     std::remove("armageddon3.png");
-    std::remove("dist4.txt");
-    std::remove("dist3.txt");
+    std::remove("armageddon4.png");
+    std::remove("dist.txt");
 
-    //clock0
-    auto clock0=std::chrono::high_resolution_clock::now();
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+    
+    //N runs for 4 planets
+    for(int i=0;i<N;i++)
+    {
+        //initial conditions
+        //distance (m)
+        //velocity (m/s)
+        const vector3<double> SUN_R,SUN_V;
+        const vector3<double> EARTH_R=rand_vec_2D(EARTH_AVG);
+        const vector3<double> EARTH_V=Earth_vel*perp_unit_vec(EARTH_R);
+        const vector3<double> JUPITER_R=rand_vec_2D(JUPITER_AVG);
+        const vector3<double> JUPITER_V=Jupiter_vel*perp_unit_vec(JUPITER_R);
+        const vector3<double> ASTEROID_R=rand_vec_3D(ASTEROID_AVG);
+        
+        //5e3 m/s sets a relatively stable orbit for the asteroid
+        //random perturbation will be added for this value
 
-    //RK4 for 4 planets
-    solve_RK4_adapt(y04,t0,t1,h,armageddon4,to_file4,delta0,col4);
+        //random number generation
+        std::random_device rd{};
+        std::mt19937 gen(rd());
+        std::normal_distribution<double> distr(-1500.,-2500.);
+        const double ASTEROID_V_perturbation=distr(gen);
+        const vector3<double> ASTEROID_V=(ASTEROID_V_perturbation+5e3)*perp_unit_vec(ASTEROID_R);
 
-    //clock1
-    auto clock1=std::chrono::high_resolution_clock::now();
+        //initial states
+        const state3<double> y03{SUN_R,SUN_V,
+                                 EARTH_R,EARTH_V,
+                                 ASTEROID_R,ASTEROID_V};
 
-    //"measuring" time
-    double time_clock4=(static_cast<std::chrono::duration<double,std::milli>>(clock1-clock0)).count();
-    std::cout<<"Overall integration time for 4 planets: "<<time_clock4<<" ms."<<std::endl;
+        const state4<double> y04{SUN_R,SUN_V,
+                                 EARTH_R,EARTH_V,
+                                 JUPITER_R,JUPITER_V,
+                                 ASTEROID_R,ASTEROID_V};
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......                                
+
+        //first run for illustrative figures
+        if(i==0)
+        {
+            //clock0
+            auto clock0=std::chrono::high_resolution_clock::now();
+
+            //RK4 for 3 planets
+            double path3=solve_RK4_adapt(y03,t0,t1,h,armageddon3,to_file3,delta0,col3,min3);
+
+            //clock1
+            auto clock1=std::chrono::high_resolution_clock::now();
+
+            //"measuring" time
+            double time_clock3=(static_cast<std::chrono::duration<double,std::milli>>(clock1-clock0)).count();
+            std::cout<<"Overall integration time for the "<<i+1<<". 3 planet simulation with plotting figure: "<<time_clock3<<" ms."<<std::endl;
+
+            //clock2
+            auto clock2=std::chrono::high_resolution_clock::now();
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......                                
+
+            //RK4 for 4 planets
+            double path4=solve_RK4_adapt(y04,t0,t1,h,armageddon4,to_file4,delta0,col4,min4);
+
+            //clock1
+            auto clock3=std::chrono::high_resolution_clock::now();
+
+            //"measuring" time
+            double time_clock4=(static_cast<std::chrono::duration<double,std::milli>>(clock3-clock2)).count();
+            std::cout<<"Overall integration time for the "<<i+1<<". 4 planet simulation with plotting figure: "<<time_clock4<<" ms."<<std::endl;
+        /*
+            //minimum distance 
+            std::ofstream file;
+            file.open("dist.txt",std::fstream::app);
+            file<<i<<" ";
+            file<<path3<<" ";
+            file<<path4<<"\n";
+        */
+            if(path3>path4)
+            {
+                trg++;
+            }
+        }
+        else  
+        {
+        
+            //clock0
+            auto clock0=std::chrono::high_resolution_clock::now();
+
+            //RK4 for 3 planets
+            double path3=solve_RK4_adapt(y03,t0,t1,h,armageddon3,nothing3,delta0,col3,min3);
+
+            //clock1
+            auto clock1=std::chrono::high_resolution_clock::now();
+
+            //"measuring" time
+            double time_clock3=(static_cast<std::chrono::duration<double,std::milli>>(clock1-clock0)).count();
+            std::cout<<"Overall integration time for the "<<i+1<<". 3 planet simulation: "<<time_clock3<<" ms."<<std::endl;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-    //clock2
-    auto clock2=std::chrono::high_resolution_clock::now();
+            //clock2
+            auto clock2=std::chrono::high_resolution_clock::now();
 
-    //RK4 for 3 planets
-    solve_RK4_adapt(y03,t0,t1,h,armageddon3,to_file3,delta0,col3);
+            //RK4 for 4 planets
+            double path4=solve_RK4_adapt(y04,t0,t1,h,armageddon4,nothing4,delta0,col4,min4);
 
-    //clock3
-    auto clock3=std::chrono::high_resolution_clock::now();
+            //clock1
+            auto clock3=std::chrono::high_resolution_clock::now();
 
-    //"measuring" time
-    double time_clock3=(static_cast<std::chrono::duration<double,std::milli>>(clock3-clock2)).count();
-    std::cout<<"Overall integration time for 3 planets: "<<time_clock3<<" ms."<<std::endl;
+            //"measuring" time
+            double time_clock4=(static_cast<std::chrono::duration<double,std::milli>>(clock3-clock2)).count();
+            std::cout<<"Overall integration time for the "<<i+1<<". 4 planet simulation: "<<time_clock4<<" ms."<<std::endl;
+        /*
+            //minimum distance 
+            std::ofstream file;
+            file.open("dist.txt",std::fstream::app);
+            file<<i<<" ";
+            file<<path3<<" ";
+            file<<path4<<"\n";
+         */
+            if(path3>path4)
+            {
+                trg++;
+            }
+        }
+    }
+    std::cout<<"Distance between Earth and the Asteroid was shorter in "<<trg<<" runs when Jupiter was present out of "<<N<<" runs."<<std::endl;
 
     return 0;
 }

@@ -4,13 +4,14 @@
 
 //adaptive Cash-Karp method implementation for numerical integration
 //via one RK5 and one RK4 step
-template<typename State,typename T,typename RHS,typename Callback,typename Collision>
-auto solve_RK4_adapt(State y0,T t0,T t1,T h,RHS f,Callback cb,T const& Delta0,Collision col)
+template<typename State,typename T,typename RHS,typename Callback,typename Collision,typename Dist>
+auto solve_RK4_adapt(State y0,T t0,T t1,T h,RHS f,Callback cb,T const& Delta0,Collision col,Dist dist)
 {
     //setting initial values
     T t=t0;
     State y=y0;
     T i=(T)0;
+    T path=(T)1e20;
     bool collision_marker=false;
     //adaptive steps until reaching integration boundary
     while(t<t1)
@@ -45,6 +46,11 @@ auto solve_RK4_adapt(State y0,T t0,T t1,T h,RHS f,Callback cb,T const& Delta0,Co
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
+        y=y+(T)37/378*k1+(T)250/621*k3+(T)125/594*k4+(T)512/1771*k6;
+        t=t+h;
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......        
+
         //simple loading screen
         if(std::abs(i*t1/100-t)<h)
         {
@@ -56,8 +62,8 @@ auto solve_RK4_adapt(State y0,T t0,T t1,T h,RHS f,Callback cb,T const& Delta0,Co
             }
         }
 
-        y=y+(T)37/378*k1+(T)250/621*k3+(T)125/594*k4+(T)512/1771*k6;
-        t=t+h;
+        //inner check functions
+        path=dist(y,path);
         cb(t,y,h);
         collision_marker=col(y);
         if(collision_marker)
@@ -65,4 +71,5 @@ auto solve_RK4_adapt(State y0,T t0,T t1,T h,RHS f,Callback cb,T const& Delta0,Co
             break;
         }
     }
+    return path;
 }

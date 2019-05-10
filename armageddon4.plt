@@ -17,4 +17,4 @@ set xtics font ", 7"
 set ytics font ", 7"
 set ztics font ", 7"
 
-splot "armageddon4.txt" using 1:2:3 title "Sun" with line, "armageddon4.txt" using 4:5:6 title "Earth" with line, "armageddon4.txt" using 7:8:9 title "Jupiter" with line, "armageddon4.txt" using 10:11:12 title "Asteroid" with line
+splot "armageddon4.txt" using 1:2:3 title "Sun" lt rgb 'orange' with line, "armageddon4.txt" using 4:5:6 title "Earth" lt rgb 'blue' with line, "armageddon4.txt" using 7:8:9 title "Jupiter" lt rgb 'grey' with line, "armageddon4.txt" using 10:11:12 title "Asteroid" lt rgb 'black' with line
