@@ -355,7 +355,7 @@ int main(int, char**)
             }
         }
     }
-    std::cout<<"Distance between Earth and the Asteroid was shorter in "<<trg<<" runs when Jupiter was present out of "<<N<<" runs."<<std::endl;
+    std::cout<<"Distance between Earth and the Asteroid was shorter in "<<trg<<" runs when Jupiter was not present out of "<<N<<" runs."<<std::endl;
 
     return 0;
 }
