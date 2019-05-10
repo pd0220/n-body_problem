@@ -219,7 +219,7 @@ int main(int, char**)
     const double t1=1e9;
     const double h=1e4;
     const double delta0=1e-9;
-    const int N=1;
+    const int N=1000;
     int trg=0;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
