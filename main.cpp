@@ -85,10 +85,6 @@ int main(int, char**)
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-    
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
     //to file
     auto to_file3=[&](double t,state3<double> const& s,double dt)
     {
@@ -216,7 +212,7 @@ int main(int, char**)
 
     //integration of ODEs
     const double t0=0.;
-    const double t1=2e9;
+    const double t1=1e9;
     const double h=1e4;
     const double delta0=1e-8;
     const int N=1000;
@@ -298,14 +294,14 @@ int main(int, char**)
             //"measuring" time
             double time_clock4=(static_cast<std::chrono::duration<double,std::milli>>(clock3-clock2)).count();
             std::cout<<"Overall integration time for the "<<i+1<<". 4 planet simulation with plotting figure: "<<time_clock4<<" ms."<<std::endl;
-        /*
+        
             //minimum distance 
             std::ofstream file;
             file.open("dist.txt",std::fstream::app);
             file<<i<<" ";
             file<<path3<<" ";
             file<<path4<<"\n";
-        */
+        
             if(path3>path4)
             {
                 trg++;
@@ -341,14 +337,14 @@ int main(int, char**)
             //"measuring" time
             double time_clock4=(static_cast<std::chrono::duration<double,std::milli>>(clock3-clock2)).count();
             std::cout<<"Overall integration time for the "<<i+1<<". 4 planet simulation: "<<time_clock4<<" ms."<<std::endl;
-        /*
+        
             //minimum distance 
             std::ofstream file;
             file.open("dist.txt",std::fstream::app);
             file<<i<<" ";
             file<<path3<<" ";
             file<<path4<<"\n";
-         */
+         
             if(path3>path4)
             {
                 trg++;
