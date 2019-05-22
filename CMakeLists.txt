@@ -8,39 +8,35 @@ if (MSVC)
   string(REGEX REPLACE "/W[0-9]" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
 endif (MSVC)
 
-add_executable(n_body_simulation main.cpp)
+add_executable(${PROJECT_NAME} main.cpp)
 
-#CMake Pipeline begin (3 planets)
-add_executable(CMakePipeline3 main.cpp)
+add_custom_command(COMMAND ${PROJECT_NAME}
+                   WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+                   OUTPUT ${CMAKE_BINARY_DIR}/armageddon3.txt
+                          ${CMAKE_BINARY_DIR}/armageddon4.txt
+                   DEPENDS ${PROJECT_NAME}
+                   COMMENT "Generating data set")
 
-add_custom_target(data3 ALL DEPENDS ${PROJECT_SOURCE_DIR}/armageddon3.txt)
+add_custom_target(data ALL DEPENDS ${CMAKE_BINARY_DIR}/armageddon3.txt
+                                   ${CMAKE_BINARY_DIR}/armageddon4.txt)
 
 find_package (Gnuplot REQUIRED)
 
 add_custom_command(COMMAND ${GNUPLOT_EXECUTABLE} ${PROJECT_SOURCE_DIR}/armageddon3.plt
-                   WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+                   WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
                    OUTPUT ${PROJECT_SOURCE_DIR}/armageddon3.png
-                   DEPENDS ${PROJECT_SOURCE_DIR}/armageddon3.plt data3
+                   DEPENDS ${PROJECT_SOURCE_DIR}/armageddon3.plt data
                    COMMENT "Generating plot for 3-body simulation")
 
 add_custom_target(plot3 ALL DEPENDS ${PROJECT_SOURCE_DIR}/armageddon3.png)
-#CMake pipeline end 
-
-#CMake Pipeline begin (4 planets)
-add_executable(CMakePipeline4 main.cpp)
-
-add_custom_target(data4 ALL DEPENDS ${PROJECT_SOURCE_DIR}/armageddon4.txt)
-
-find_package (Gnuplot REQUIRED)
 
 add_custom_command(COMMAND ${GNUPLOT_EXECUTABLE} ${PROJECT_SOURCE_DIR}/armageddon4.plt
-                   WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+                   WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
                    OUTPUT ${PROJECT_SOURCE_DIR}/armageddon4.png
-                   DEPENDS ${PROJECT_SOURCE_DIR}/armageddon4.plt data4
-                   COMMENT "Generating plot for 4-body simulation")
+                   DEPENDS ${PROJECT_SOURCE_DIR}/armageddon4.plt data
+                   COMMENT "Generating plot for 4-body simulation")         
 
-add_custom_target(plot4 ALL DEPENDS ${PROJECT_SOURCE_DIR}/armageddon4.png)
-#CMake pipeline end   
+add_custom_target(data4 ALL DEPENDS ${PROJECT_SOURCE_DIR}/armageddon4.png)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 17
                                                  CXX_STANDARD_REQUIRED ON
@@ -66,6 +62,3 @@ if(BUILD_TESTING)
   add_test(NAME vector3_func COMMAND vector3_func)
 endif(BUILD_TESTING)
                 
-set(CPACK_PROJECT_NAME ${PROJECT_NAME})
-set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
-include(CPack)
